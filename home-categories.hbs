@@ -1,0 +1,31 @@
+{{!-- Markup to show the top 4 tags on the homepage --}}
+{{#get "tags" limit="4" include="count.posts" order="count.posts desc"}}
+    {{#if tags}}
+        <section class="section-home-tags py-10 xs:py-12 md:py-16">
+            <div class="wrapper flex flex-col gap-6">
+                <h1 class="section-home-tags-title font-heading text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{t "Top categories"}} </h1>
+                <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8">
+                    {{#foreach tags}}
+                        <a aria-label="{{name}}" href="{{url}}" {{#if accent_color}}style="--accent-color:{{accent_color}}"{{/if}} class="section-home-tags-card border border-[--border-color] bg-[--bg-color-secondary] {{#if accent_color}}hover:border-[--accent-color]{{else}}hover:border-[--text-primary]{{/if}} flex flex-col justify-between gap-4 p-6 rounded-sm group">
+                            <div class="flex flex-col gap-2">
+                                <h2 class="section-home-tags-card-name font-heading text-[--text-primary] font-medium text-xl xs:text-2xl"> {{name}} </h2>
+                                {{#if description}}
+                                    <p class="section-home-tags-card-desc mt-8 text-[--text-secondary] font-medium text-sm line-clamp-4 "> {{description}} </p>
+                                {{/if}}
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                {{#if feature_image}}
+                                    {{> images/feature-image-s show_caption=false classes="section-home-tags-card-img mt-4 size-24 rounded-full object-cover object-center"}}
+                                {{/if}}
+                                <div class="mt-4 flex items-center gap-2">
+                                    <span class="text-[--text-primary] text-sm font-medium">{{plural count.posts empty=(t 'No posts') singular=(t '1 post') plural=(t '% posts')}}</span>
+                                    <img src="{{asset "img/redirect.svg"}}" alt="redirect-icon" aria-hidden="true" class="filter-theme size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                </div>
+                            </div>
+                        </a>
+                    {{/foreach}}
+                </div>
+            </div>
+        </section>
+    {{/if}}
+{{/get}}

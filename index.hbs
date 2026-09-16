@@ -1,0 +1,56 @@
+{{!< default}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/latest/" hreflang="{{@custom.main_locale}}"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/latest/" hreflang="x-default"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/latest/" hreflang="hi"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/latest/" hreflang="es"/>
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+{{#contentFor 'title'}}{{t "Latest"}}{{/contentFor}}
+<section class="section-latest py-10 xs:py-12 md:py-16">
+  <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 xs:gap-6 lg:gap-8 items-center">
+      <div class="flex flex-col justify-center gap-4 xs:gap-6 lg:gap-8">
+          <h1 class="section-latest-title font-heading text-[--text-primary] text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none"> {{t "Latest"}} </h1>
+      </div>
+      {{!--{{#if feature_image}}
+        <img src="{{img_url feature_image size="xl"}}" alt="{{name}}" title="{{name}}" class="w-full aspect-[1.5] md:aspect-[1.3] lg:aspect-video rounded-sm object-cover object-center" />
+      {{/if}}--}}
+    </div>
+    <div class="h-px w-full bg-[--border-color]"></div>
+    <div class="flex flex-col gap-10 xs:gap-12 md:gap-16">
+      <div class="section-latest-loop js-post-list grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xs:gap-5 md:gap-16">
+        {{#foreach posts}}
+          {{> loop is_page=true}}
+        {{/foreach}}
+      </div>
+    </div>
+    {{!-- Show pagination --}}
+    {{pagination}}
+  </div>
+</section>
+{{> join-populizt}}

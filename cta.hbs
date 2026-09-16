@@ -1,0 +1,21 @@
+{{!-- Common CTA markup --}}
+<section class="common-cta bg-[--dark-bg] py-10 border border-[--dark-border] border-l-0 border-r-0">
+    <div class="wrapper flex flex-col items-center justify-center gap-4">
+        <h4
+            class="common-cta-title m-0 max-w-[40rem] font-heading text-center text-white text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal">
+            {{title}}
+        </h4>
+        <p class="common-cta-description text-center text-white">
+            {{description}}
+        </p>
+        <a href="javascript:" data-portal="{{#if data_portal}}{{data_portal}}{{else}}signup{{/if}}"
+            aria-label="{{button}}"
+            class="common-cta-button inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+            {{button}}
+        </a>
+        <span class="common-cta-footer text-sm text-center text-[--gray]">{{t "Already have an account? "}}<a
+                aria-label="{{t " Sign in"}}" href="javascript:" data-portal="signin"
+                class="inline-block underline underline-offset-2 hover:text-[--footer-text-hover]">{{t "Sign in"}}</a>
+        </span>
+    </div>
+</section>

@@ -1,0 +1,14 @@
+{{#get "posts" include="tags,authors" limit="3" filter="id:-{{id}}+tag:{{primary_tag.slug}}" as |related|}}
+<section class="section-read-more py-10 xs:py-12 md:py-16 border-b border-[--border-color]">
+    <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+        <div class="flex flex-col gap-10 xs:gap-12 md:gap-16">
+            <h1 class="section-read-more-title font-heading text-[--text-primary] text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none"> READ NEXT </h1>
+            <div class="section-read-more-loop grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xs:gap-5 md:gap-8">
+                {{#foreach related}}
+                    {{> loop}}
+                {{/foreach}}
+            </div>
+        </div>
+    </div>
+</section>
+{{/get}}

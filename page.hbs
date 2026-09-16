@@ -1,0 +1,72 @@
+{{!< default}}
+{{#contentFor 'title'}}{{meta_title}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{#page}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/{{slug}}/" hreflang="{{@custom.main_locale}}"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/{{slug}}/" hreflang="x-default"/>
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi/{{slug}}/" hreflang="hi"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es/{{slug}}/" hreflang="es"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+        {{/page}}
+    {{/contentFor}}
+{{/if}}
+{{#contentFor 'scripts'}}{{> scripts post=true no-toc=true}}{{/contentFor}}
+{{#page}}
+    <section class="{{#match @page.show_title_and_feature_image}}py-10 xs:py-12 md:py-16{{else}}pb-10 xs:pb-12 md:pb-16{{/match}} lg:border-b border-[--border-color]">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+            <div class="mx-auto max-w-5xl">
+                {{#match @page.show_title_and_feature_image}}
+                    <div class="flex flex-col gap-2 xs:gap-4">
+                        <h1 class="font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center"> {{title}} </h1>
+                        {{#if custom_excerpt}}<p class="text-[--text-secondary] font-medium text-sm xs:text-base text-center"> {{custom_excerpt}} </p>{{/if}}
+                    </div>
+                    {{!-- Feature Image --}}
+                    {{#if feature_image}}
+                        <div class="col-lg-12 text-center">
+                            {{> images/feature-image-xxl show_caption=true classes="mt-8 xs:mt-12 w-full rounded-sm object-cover object-center"}}
+                        </div>
+                    {{/if}}
+                {{/match}}
+                <div class="grid grid-cols-1 lg:mx-40 gap-16 lg:gap-12 {{#match @page.show_title_and_feature_image}}mt-8{{/match}} xs:mt-12">
+                    <div class="flex flex-col gap-8">
+                        {{!-- To remove the drop cap from the article, please remove the class 'has-dropcap' from the below line and vice-versa--}}
+                        <article id="blog-article" class="post-page-content text-[--text-primary] text-lg pb-4">
+                            {{content}}
+                        </article>
+                        {{#if tags}}
+                            <div class="flex items-center gap-2 flex-wrap">
+                                {{#foreach tags}}
+                                    <a href="{{url}}" aria-label="{{name}}" class="text-sm text-[--text-accent] uppercase font-medium py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                                {{/foreach}}
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{{/page}}
+{{> join-populizt}}

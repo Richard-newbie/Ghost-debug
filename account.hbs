@@ -1,0 +1,66 @@
+{{!< default}}
+{{#contentFor 'title' }}{{t "Account" }}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/account/" hreflang="{{@custom.main_locale}}"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/account/" hreflang="x-default"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/account/" hreflang="hi"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/account/" hreflang="es"/>
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com/account/" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com/account/" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+{{#if @member}}
+    <section class="section-author py-10">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+                <div class="flex flex-col items-center justify-center gap-4 xs:gap-6 lg:gap-8">
+                    <h1 class="section-author-name font-heading text-[--text-primary] text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none text-center">{{t "My Account"}}</h1>
+                </div>
+                <div class="h-px w-full bg-[--border-color]"></div>
+                <div class="wrapper flex flex-col items-center gap-12">
+                    {{> account-member-details}}
+                    {{#if @member.paid}}
+                        {{#foreach @member.subscriptions}}
+                            {{> account-plan-details}}
+                        {{/foreach}}
+                    {{else}}
+                        <div class="h-px w-full bg-[--border-color]"></div>
+                        <div class="wrapper flex flex-col items-center">
+                            <div class="flex flex-col">
+                                <h2 class="font-heading text-[--text-primary] text-xl font-medium leading-none text-center">{{t "Upgrade your plan"}}</h2>
+                            </div>
+                            {{> membership-pricing isFree=true isAccount=true}}
+                        </div>
+                    {{/if}}
+                </div>
+        </div>
+    </section>
+{{else}}
+    {{!-- Not logged in: Redirect to signin --}}
+    {{#if @custom.use_portal_links}}
+        <script>window.location.hash = '/portal/signin/';</script>
+    {{else}}
+        <script>window.location = '{{@site.url}}/signin/';</script>
+    {{/if}}
+{{/if}}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="{{@site.locale}}" data-theme="dark">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="preconnect" href="https://fonts.gstatic.com/" />
+        <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+        {{#if @custom.enable_multilingual_features}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}{{url}}" hreflang="{{@custom.main_locale}}"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}{{url}}" hreflang="x-default"/>
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi{{url}}" hreflang="hi"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es{{url}}" hreflang="es"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+        {{/if}}
+        {{!-- Use fonts based on Ghost admin settings --}}
+        {{> fonts}}
+        {{!-- Compiled CSS --}}
+        <link rel="stylesheet" href="{{asset "built/index.css"}}">
+        {{{block "styles"}}}
+        {{#if @custom.accent_color_for_dark_mode}}
+            <style>
+                :root[data-theme="dark"] {
+                    --ghost-accent-color: {{ @custom.accent_color_for_dark_mode }};
+                }
+            </style>
+        {{/if}}
+        {{> scripts theme=true}}
+        <title>{{t "Error"}}</title>
+        {{!-- Outputs important meta data and settings, should always be in <head> --}}
+        {{ghost_head}}
+    </head>
+
+    <body class="{{body_class}} bg-[--bg-color] flex-col min-h-screen flex">
+        <header class="fixed z-1000 top-0 left-0 w-full bg-[--header-bg]">
+    <div class="border-b border-[--border-color]">
+        <nav class="wrapper py-5 flex items-center justify-center">
+            {{> logo}}
+            </nav>
+            </div>
+            </header>
+        <main class="flex-1">
+          <section class="py-10 xs:py-12 md:py-16">
+            <div class="wrapper flex flex-col items-center gap-12">
+              <div class="flex flex-col gap-2 xs:gap-4">
+                <h1 class="font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center"> {{statusCode}} </h1>
+              </div>
+            </div>
+          </section>
+          <div class="wrapper flex flex-col items-center gap-12">
+            <div class="mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+              <p class="mb-4 text-[--text-primary]">{{message}}</p>
+              <a href="{{@site.url}}" class="js-load-posts w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                <span class="h-[26px] flex items-center justify-center"> {{t "Open Homepage"}}</span>
+              </a>
+            </div>
+          </div>
+        </main>
+        <footer class="bg-[--footer-bg] border-t border-[--footer-border]">
+    <div class="wrapper text-sm font-medium flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 py-4 md:py-5">
+        <div class="text-[--footer-text] text-center"> &copy;{{date format="YYYY"}} <a aria-label="{{@site.title}}" href={{@site.url}}>{{@site.title}}</a> </div>
+    </div>
+    </footer>
+        <button aria-label="scroll to top" id="scroll-to-top" data-visible="false" class="fixed data-[visible='false']:-bottom-8 data-[visible='true']:bottom-8 data-[visible='false']:opacity-0 data-[visible='true']:opacity-1 right-8 size-10 rounded-full z-50 bg-[--scroll-to-top-bg] hover:bg-[--scroll-to-top-hover]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 102 102" fill="none" class="h-full w-full stroke-[--page-progress]">
+                <path stroke-linecap="round" stroke-linejoin="round" id="page-progress" d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" stroke-width="4px"></path>
+            </svg>
+            <div class="absolute top-0 left-0 h-full w-full flex justify-center items-center">
+                <img src="{{asset "img/arrow-up.svg"}}" alt="scroll to top" class="h-4/5 filter-theme" />
+            </div>
+        </button>
+        {{!-- Global variables for pagination and custom settings --}}
+        <script>
+            const GLOBAL = {
+                DEFAULT_COLOR_SCHEME: 'system',//accepted values: dark, light, system
+            }
+        </script>
+        {{!-- Compiled JS --}}
+        {{!-- <script src="{{asset "built/index.js"}}" defer></script> --}}
+        {{!-- <foot> --}}
+        {{ghost_foot}}
+        {{!-- Outputs important scripts - should always be included before closing body tag --}}
+    </body>
+
+</html>

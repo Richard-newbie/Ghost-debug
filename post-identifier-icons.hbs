@@ -1,0 +1,43 @@
+{{#if is_no_image}}
+    {{#if featured}}
+        <img src="{{asset "img/featured.svg"}}" alt="featured-icon" aria-hidden="true" class="cursor-pointer h-3 filter-theme" title="Featured" width="24" height="24"/>
+        <div class="text-[10px] text-[--text-primary]">&bullet;</div>
+    {{/if}}
+    {{^if access}}
+        {{#has visibility="members"}}
+            <img src="{{asset "img/member.svg"}}" alt="Members" aria-hidden="true" class="cursor-pointer h-3 filter-theme" title="Members" width="24" height="24"/>
+            <div class="text-[10px] text-[--text-primary]">&bullet;</div>
+        {{/has}}
+        {{#has visibility="paid"}}
+            <img src="{{asset "img/paid.svg"}}" alt="Paid" aria-hidden="true" class="cursor-pointer h-3 filter-theme" title="Paid" width="24" height="24"/>
+            <div class="text-[10px] text-[--text-primary]">&bullet;</div>
+        {{/has}}
+        {{#has visibility="tiers"}}
+            <img src="{{asset "img/paid.svg"}}" alt="Tiers" aria-hidden="true" class="cursor-pointer h-3 filter-theme" title="Tiers" width="24" height="24"/>
+            <div class="text-[10px] text-[--text-primary]">&bullet;</div>
+        {{/has}}
+    {{/if}}
+{{else}}
+    {{#if featured}}
+        <div title="Featured" class="{{#if is_featured_icon_left}}left-1 {{/if}} {{div_classes}} ">
+            <img src="{{asset "img/featured.svg"}}" alt="featured" class="{{img_classes}}" width="24" height="24"/>
+        </div>
+    {{/if}}
+    {{^if access}}
+        {{#has visibility="members"}}
+            <div title="Members" class="{{div_classes}}">
+                <img src="{{asset "img/member.svg"}}" alt="Members" class="{{img_classes}}" width="24" height="24"/>
+            </div>
+        {{/has}}
+        {{#has visibility="paid"}}
+            <div title="Paid" class="{{div_classes}}">
+                <img src="{{asset "img/paid.svg"}}" alt="Paid" class="{{img_classes}}" width="24" height="24"/>
+            </div>
+        {{/has}}
+        {{#has visibility="tiers"}}
+            <div title="Paid plan" class="{{div_classes}}">
+                <img src="{{asset "img/paid.svg"}}" alt="Tiers" class="{{img_classes}}" width="24" height="24"/>
+            </div>
+        {{/has}}
+    {{/if}}
+{{/if}}

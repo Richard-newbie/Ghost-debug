@@ -1,0 +1,107 @@
+{{!-- Load font styles based on Ghost Admin settings. You can read the documentation to add more fonts --}}
+{{!-- Primary Font --}}
+{{#if @custom.primary_font}}
+    {{#match @custom.primary_font "Alegreya"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Alegreya';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Newsreader"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Newsreader';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Oswald"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Oswald';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Playfair Display"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Playfair Display';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Source Serif 4"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Source Serif 4';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Roboto Serif"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Roboto Serif';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "PT Serif"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'PT Serif';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Merriweather"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-primary:'Merriweather';}</style>
+    {{/match}}
+{{else}}
+    {{!-- Default Primary Font --}}
+    <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap" rel="stylesheet"></noscript>
+    <style>body{--font-primary:'Source Serif 4';}</style>
+{{/if}}
+{{!-- Secondary Font --}}
+{{#if @custom.secondary_font}}
+    {{#match @custom.secondary_font "Alegreya Sans"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Alegreya Sans';}</style>
+    {{/match}}
+    {{#match @custom.primary_font "Newsreader"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Newsreader';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Oswald"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Oswald';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Roboto"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Roboto';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Roboto Flex"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Roboto Flex';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Open Sans"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Open Sans';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Lato"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Lato';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Inter"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Inter';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "Source Sans 3"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'Source Sans 3';}</style>
+    {{/match}}
+    {{#match @custom.secondary_font "PT Sans"}}
+        <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+        <noscript><link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"></noscript>
+        <style>body{--font-secondary:'PT Sans';}</style>
+    {{/match}}
+{{else}}
+    {{!-- Default secondary Font --}}
+    <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet"></noscript>
+    <style>body{--font-secondary:'Source Sans 3';}</style>
+{{/if}}

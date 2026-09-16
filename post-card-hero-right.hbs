@@ -1,0 +1,50 @@
+<div class="h-[7.5rem] lg:h-max group flex flex-col gap-2">
+    <div class="flex {{#if feature_image}}gap-2{{/if}} h-full">
+        <div class="flex flex-col justify-between gap-4 xs:gap-2">
+            <div class="flex flex-col gap-4 xs:gap-2">
+                {{!--
+                {{#primary_tag}}
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <a aria-label="{{name}}" href="{{url}}" class="text-sm text-[--text-accent] uppercase font-medium py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                    </div>
+                {{/primary_tag}}
+                --}}
+                <a aria-label="{{title}}" href="{{url}}">
+                    <h2 class="font-heading text-[--text-primary] font-medium text-base lg:text-base md:line-clamp-3 hover:underline underline-offset-2"> {{title}} </h2>
+                </a>
+                <div class="flex-col gap-4 xs:gap-2">
+                    <div class="flex lg:hidden items-center gap-2">
+                        {{> post-meta minimal=true}}
+                    </div>
+                </div>
+                <div class="hidden lg:flex items-center gap-2">
+                    {{^if feature_image}}
+                        {{> post-identifier-icons is_no_image=true}}
+                    {{/if}}
+                    {{> post-meta minimal=true}}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-shrink-0 ml-auto {{#if feature_image}}h-full lg:h-[5.5rem]{{else}}hidden{{/if}} aspect-square xs:aspect-[1.5] rounded-sm overflow-hidden relative">
+            {{#if feature_image}}
+                <a aria-label="{{title}}" href="{{url}}">
+                    {{> images/feature-image-l show_caption=false classes="h-full w-full object-cover object-center group-hover:scale-[1.025] transition-transform duration-300"}}
+                {{#if featured}}
+                    <div title="Featured" class="left-1  aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1 ">
+                        <img src="{{asset "img/featured.svg"}}" alt="featured" class="filter-white h-4" width="24" height="24">
+                    </div>
+                {{/if}}
+                {{^if access}}
+                    <div title="Paid" class="aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1">
+                        <img src="{{asset "img/paid.svg"}}" alt="Paid" class="filter-white h-4" width="24" height="24">
+                    </div>
+                {{/if}}
+                </a>
+            {{/if}}
+        </div>
+    </div>
+</div>
+{{^if @last}}
+    <div class="md:hidden lg:block h-px bg-[--border-color]"></div>
+{{/if}}

@@ -1,0 +1,10 @@
+<section class="section-hero py-10 xs:py-12 md:py-16">
+    <div class="wrapper hero">
+        {{> hero-featured-post-left}}
+        {{> hero-latest-post-right}}
+        {{> hero-featured-post-center}}
+        {{#if @site.members_enabled}}
+            {{> hero-subscribe-form}}
+        {{/if}}
+    </div>
+</section>

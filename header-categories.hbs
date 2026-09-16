@@ -1,0 +1,16 @@
+{{!-- Show top 10 tags in header, just below navigation menu --}}
+{{#get "tags" limit="10" include="count.posts" order="count.posts desc"}}
+    {{#if tags}}
+    <div class="header-tags border-b border-[--border-color] py-4">
+        <div id="category-container" class="wrapper overflow-y-auto no-scrollbar flex items-center">
+            <ul class="h-6 text-xs font-medium flex items-center uppercase gap-10 md:gap-10 whitespace-nowrap">
+
+                {{#foreach tags}}
+                    <li class="header-tag-{{slug}}"><a aria-label="{{name}}" href="{{url}}" class="text-[--text-primary] text-sm text-nowrap hover:text-[--text-secondary]">{{name}}</a></li>
+                {{/foreach}}
+
+            </ul>
+        </div>
+    </div>
+    {{/if}}
+{{/get}}

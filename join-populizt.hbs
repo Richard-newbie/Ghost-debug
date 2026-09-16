@@ -1,0 +1,41 @@
+{{#if @site.members_enabled}}
+{{#if @site.members_invite_only}}
+<section class="join-populizt-section py-8 xs:py-10 md:py-12 px-5 bg-[--bg-color-secondary]">
+    <div class="max-w-[40rem] mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+        <h1
+            class="join-populizt-title font-heading text-center text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal">
+            {{t "Subscription for {title} is by invite only." title=@site.title}}
+        </h1>
+        <p class="join-populizt-desc text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm">
+            {{t "Please contact site owner for more details and access."}}
+        </p>
+        <p class="join-populizt-desc text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm">
+            {{t "Already have an account?"}} <a class="underline" href="javascript:" data-portal="signin">{{t "Sign
+                in"}}</a>
+        </p>
+    </div>
+</section>
+{{else if member_aware}}
+{{#if @member}}
+<section class="join-populizt-section py-8 xs:py-10 md:py-12 px-5 bg-[--bg-color-secondary]">
+    <div class="max-w-[40rem] mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+        <h1
+            class="join-populizt-title font-heading text-center text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal">
+            {{t "You're in."}}
+        </h1>
+        <p class="join-populizt-desc text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm">
+            {{t "Thanks for being part of Populizt. Manage your membership anytime."}}
+        </p>
+        <a aria-label="{{t " Account"}}" href="javascript:" data-portal="account"
+            class="join-populizt-btn inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+            {{t "Account"}}
+        </a>
+    </div>
+</section>
+{{else}}
+{{> join-populizt-cta}}
+{{/if}}
+{{else}}
+{{> join-populizt-cta}}
+{{/if}}
+{{/if}}

@@ -1,0 +1,34 @@
+{{!-- Markup to show the center post on the homepage --}}
+<div class="hero-center flex flex-col gap-5 md:gap-2 px-0 md:pl-8 pb-10 md:pb-0 border-b md:border-b-0 lg:px-5 md:border-l lg:border-x border-[--border-color]">
+    {{#match @custom.hero_center_column_posts "Featured Posts"}}
+        {{#match @custom.carousel_slider_posts "Featured Posts"}}
+            {{#get "posts" filter="featured:true" order="published_at desc" limit="6" include="tags,authors"}}
+                    {{#foreach posts from="6"}}
+                        {{> post-card-hero-center}}
+                    {{/foreach}}
+            {{/get}}
+        {{else}}
+            {{#get "posts" filter="featured:true" order="published_at desc" limit="1" include="tags,authors"}}
+                {{#foreach posts}}
+                    {{> post-card-hero-center}}
+                {{/foreach}}
+            {{/get}}
+        {{/match}}
+    {{/match}}
+
+    {{#match @custom.hero_center_column_posts "Latest Posts"}}
+        {{#match @custom.carousel_slider_posts "Latest Posts"}}
+            {{#get "posts" order="published_at desc" limit="6" include="tags,authors"}}
+                {{#foreach posts from="6"}}
+                    {{> post-card-hero-center}}
+                {{/foreach}}
+            {{/get}}
+        {{else}}
+            {{#get "posts" order="published_at desc" limit="1" include="tags,authors"}}
+                {{#foreach posts}}
+                    {{> post-card-hero-center}}
+                {{/foreach}}
+            {{/get}}
+        {{/match}}
+    {{/match}}
+</div>

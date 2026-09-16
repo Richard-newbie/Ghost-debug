@@ -1,0 +1,42 @@
+{{!< default}}
+{{#contentFor 'title'}}{{meta_title}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{#post}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/{{slug}}/" hreflang="{{@custom.main_locale}}"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/{{slug}}/" hreflang="x-default"/>
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi/{{slug}}/" hreflang="hi"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es/{{slug}}/" hreflang="es"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+        {{/post}}
+    {{/contentFor}}
+{{/if}}
+{{#contentFor 'scripts'}}{{> scripts post=true}}{{/contentFor}}
+{{#post}}
+    {{> post-content sticky-toc=true sidebar=false}}
+    {{> post-comments}}
+    {{> post-read-more}}
+{{/post}}
+{{> join-populizt member_aware=true}}

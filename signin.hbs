@@ -1,0 +1,101 @@
+{{!< default}}
+{{#contentFor 'title' }}{{t "Sign in" }}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/signin/" hreflang="{{@custom.main_locale}}" />
+            <link rel="alternate" href="{{@custom.main_locale_url}}/signin/" hreflang="x-default" />
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi/signin/" hreflang="hi" />
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es/signin/" hreflang="es" />
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+    {{/contentFor}}
+{{/if}}
+{{#if @member}}
+    {{!-- Logged in: Redirect to account --}}
+    {{#if @custom.use_portal_links}}
+        <script>window.location = '{{@site.url}}/account/#/portal/account/';</script>
+    {{else}}
+        <script>window.location = '{{@site.url}}/account/';</script>
+    {{/if}}
+{{else if @custom.use_portal_links}}
+    <script>window.location.hash = '/portal/signin/';</script>
+    <section class="py-10 xs:py-12 md:py-16 min-h-[calc(100svh-25rem)]">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+            <div class="flex flex-col gap-4">
+                <h1 class="font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center">
+                    {{t "Sign in"}}
+                </h1>
+
+                <div class="wrapper xs:col-span-2 flex items-center justify-center w-full">
+                    <a aria-label="{{@site.title}} {{t "Sign in"}}" href="{{@site.url}}/signin/" {{#if @custom.use_portal_links}}data-portal="signin"{{/if}} title="{{@site.title}} {{t "Sign in"}}" class="header-btn hidden sm:inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-3 py-2.5 duration-300 text-xs font-medium uppercase text-[--subscribe-btn-text] leading-none">{{t "Sign in"}}</a>
+                </div>
+
+                <div class="wrapper xs:col-span-2 flex items-center justify-center w-full">
+                    <div class="text-[--text-primary] text-sm">{{t "Don't have an account yet?"}}
+                        <a aria-label="{{@site.title}} {{t "Sign up"}}" href="{{@site.url}}/signup/" {{#if @custom.use_portal_links}}data-portal="signup"{{/if}} title="{{@site.title}} {{t "Sign up"}}" class="underline">{{t "Sign up"}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{{else}}
+    <section class="py-10 xs:py-12 md:py-16 min-h-[calc(100svh-25rem)]">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+            <div class="flex flex-col gap-4">
+                <h1 class="font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center">
+                    {{t "Sign in"}}
+                </h1>
+                <div class="wrapper xs:col-span-2 flex items-center justify-center w-full">
+                    <div class="text-[--text-primary] text-sm">{{t "Don't have an account yet?"}}
+                        <a aria-label="{{@site.title}} {{t "Sign up"}}" href="{{@site.url}}/signup/" {{#if @custom.use_portal_links}}data-portal="signup"{{/if}} title="{{@site.title}} {{t "Sign up"}}" class="underline">{{t "Sign up"}}</a>
+                    </div>
+                </div>
+            </div>
+            <form data-members-form="signin" data-members-otc="true" class="subscription-form w-full md:max-w-[39rem] md:mx-auto grid grid-cols-1 xs:grid-cols-2 gap-6 xs:gap-8">
+                <div class="xs:col-span-2">
+                    <label for="contact-email" class="cursor-pointer inline-block text-[--text-primary] font-medium text-sm mb-1.5">{{t "Email"}}</label>
+                    <input data-members-email type="email" name="email" id="contact-email" required placeholder="jamie@example.com" class="w-full border border-[--gray] bg-transparent rounded-sm placeholder:text-[--text-secondary] text-[--text-primary] text-sm p-3 xs:p-3.5 outline-none"/>
+                </div>
+
+                <div class="common-subscribe-form-messages message-wrapper wrapper xs:col-span-2 flex items-center justify-center w-full">
+                    <div class="success-message text-[--text-primary] text-xs">{{t "Please check your inbox and confirm."}}</div>
+                    <div class="error-message text-red-500 text-xs">{{t "Something went wrong. Please try again."}}</div>
+                </div>
+
+                <button type="submit" class="common-subscribe-form-button default-button xs:col-span-2 ml-auto w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                    <span class="h-[26px] flex items-center justify-center"> {{t "Sign in"}} </span>
+                </button>
+                <button type="submit" class="common-subscribe-form-button error-button xs:col-span-2 ml-auto w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                    <span class="h-[26px] flex items-center justify-center"> {{t "Try again"}} </span>
+                </button>
+                <button type="submit" class="common-subscribe-form-button loading-button xs:col-span-2 ml-auto w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                    <span class="h-[26px] flex items-center justify-center"> {{t "Please wait"}} </span>
+                </button>
+                <button type="submit" class="common-subscribe-form-button success-button xs:col-span-2 ml-auto w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                    <span class="h-[26px] flex items-center justify-center"> {{t "Thank you"}} </span>
+                </button>
+            </form>
+        </div>
+    </section>
+{{/if}}

@@ -1,0 +1,22 @@
+{{#get "posts" filter="tag:hash-trending"}}
+    {{#if posts}}
+        <section data-visible="visible" id="ticker"
+            class="sticky  bg-[--header-bg] z-40 border-b border-[--border-color] data-[visible='hidden']:hidden data-[visible='visible']:flex items-center transition-all">
+            <div class="bg-[--text-primary] py-1 px-1.5 hidden md:block">
+                <div class="text-[--header-bg] h-6 flex items-center font-primary text-base font-medium uppercase"> {{t "FEATURED"}} </div>
+            </div>
+            <div class="overflow-hidden scroller flex-1 py-1">
+                <ul class="ticker-loop w-max h-6 flex justify-start items-center gap-3 scroller-inner animate-ticker text-sm font-medium">
+
+                    {{#foreach posts}}
+                    <li class="ticker-loop-item flex items-center gap-3">
+                        <div class="ticker-loop-item-icon size-6 rounded-sm flex items-center justify-center">|</div>
+                        <a aria-label="{{title}}" href="{{url}}" class="ticker-loop-item-title text-[--text-primary]">{{title}}</a>
+                    </li>
+                    {{/foreach}}
+
+                </ul>
+            </div>
+        </section>
+    {{/if}}
+{{/get}}

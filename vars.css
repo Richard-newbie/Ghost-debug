@@ -1,0 +1,74 @@
+/*
+Variables
+*/
+:root {
+    --font-primary: var(--font-primary);
+    --font-secondary: var(--font-secondary);
+    --filter-white: brightness(0) saturate(100%) invert(100%) sepia(16%)
+      saturate(0%) hue-rotate(2deg) brightness(110%) contrast(101%);
+    --filter-black: brightness(0) saturate(100%);
+    --filter-gray: brightness(0) saturate(100%) invert(71%) sepia(0%) saturate(0%)
+      hue-rotate(113deg) brightness(87%) contrast(84%);
+    --subscribe-btn-bg: var(--ghost-accent-color);
+    --subscribe-btn-hover: var(--ghost-accent-color);
+    --subscribe-btn-text: #07090A;
+    --footer-bg: #161616;
+    --footer-text: #999;
+    --footer-dropdown: #262626;
+    --gray: #999;
+    --footer-text-hover: #fff;
+    --footer-border: rgba(255, 255, 255, 0.2);
+    --dark-bg: #161616;
+    --dark-border: rgba(255, 255, 255, 0.2);
+    --light-border: rgba(255, 255, 255, 0.8);
+    --light-border-hover: rgba(255, 255, 255, 1);
+    --page-progress: var(--ghost-accent-color);
+    --archive-hover: rgba(153, 153, 153, 0.325);
+    --border-radius: 5px;
+    --toc-gap: 0.5rem;
+    --ticker-height: 2rem;
+    --carousel-overlay: #1d1d1d;
+    --membership-ribbon: var(--ghost-accent-color);
+}
+  :root[data-theme="dark"] {
+    --bg-color: #000000;
+    --bg-color-secondary: #272727;
+    --text-primary: #fff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --border-color: #424242;
+    --border-color-hover: #e8e8e8;
+    --border-color-secondary: #575757;
+    --nav-btn-hover: #505050;
+    --icon-hover: #505050;
+    --dropdown-hover: #505050;
+    --tag-hover: #505050;
+    --filter-theme: brightness(0) saturate(100%) invert(100%) sepia(16%)
+      saturate(0%) hue-rotate(2deg) brightness(110%) contrast(101%);
+    --header-bg: #000000;
+    --trending-bg: #fff;
+    --filter-trending: brightness(0) saturate(100%);
+    --scroll-to-top-bg: #343435;
+    --scroll-to-top-hover: #000;
+    --toc-bg: transparent;
+  }
+  :root[data-theme="light"] {
+    --bg-color: #fff;
+    --bg-color-secondary: #f3f2f2;
+    --text-primary: #000;
+    --text-secondary: rgba(0, 0, 0, 0.6);
+    --border-color: #e4e4e4;
+    --border-color-hover: #d1d1d1;
+    --border-color-secondary: #c3c3c3;
+    --nav-btn-hover: #eee;
+    --icon-hover: #eee;
+    --dropdown-hover: #eee;
+    --tag-hover: #eee;
+    --filter-theme: brightness(0) saturate(100%);
+    --header-bg: #fff;
+    --trending-bg: #000;
+    --filter-trending: brightness(0) saturate(100%) invert(100%) sepia(16%)
+      saturate(0%) hue-rotate(2deg) brightness(110%) contrast(101%);
+    --scroll-to-top-bg: #e4e4e4;
+    --scroll-to-top-hover: #c1c1c1;
+    --toc-bg: transparent;
+  }

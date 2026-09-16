@@ -1,0 +1,51 @@
+{{!< default}}
+{{#contentFor 'title'}}{{meta_title}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/" hreflang="{{@custom.main_locale}}"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/" hreflang="x-default"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/" hreflang="hi"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/" hreflang="es"/>
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+{{> ticker}}
+{{> hero}}
+
+{{#if @custom.tag_slugs_to_show_on_home}}
+    {{#get 'tags' filter='slug:[{{@custom.tag_slugs_to_show_on_home}}]'}}
+        {{#foreach tags}}
+            {{> home-tag-section}}
+            {{#if @first}}
+                {{> home-editors-choice}}
+            {{/if}}
+            {{#has number="2"}}
+                {{> home-categories}}
+            {{/has}}
+        {{/foreach}}
+    {{/get}}
+{{/if}}
+{{> home-authors}}
+{{> join-populizt}}

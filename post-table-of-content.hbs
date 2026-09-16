@@ -1,0 +1,8 @@
+{{!-- Post Table of Content --}}
+{{#if sticky}}<div class="sticky-subscribe-form">{{/if}}
+<div class="post-toc {{#if sticky}}sticky top-[9rem]{{/if}} rounded-sm p-5 xs:p-8 bg-[--bg-color-secondary] border border-[--border-color]">
+    <div class="post-toc-title text-[--text-primary] font-medium font-heading text-xl pb-2 mb-4 border-b border-[--border-color]"> {{t "Table of Content"}} </div>
+    <div id="toc-container" class="text-sm xs:text-base font-medium {{#if sticky}}lg:max-h-70dvh overflow-y-auto{{/if}}"></div>
+</div>
+{{#if sticky}}</div>{{/if}}
+{{#contentFor 'scripts'}}{{> scripts post-toc=true}}{{/contentFor}}

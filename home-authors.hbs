@@ -1,0 +1,35 @@
+{{!-- Markup to show the top 6 authors on the homepage --}}
+{{#get "authors" limit="6" include="count.posts" order="count.posts desc"}}
+    {{#if authors}}
+        <section class="section-hero-authors py-10 xs:py-12 md:py-16">
+            <div class="wrapper flex flex-col gap-6">
+                <h1 class="section-hero-authors-title font-heading text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{t "Top authors"}} </h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
+                    {{#foreach authors}}
+                        <div class="section-hero-authors-card border border-[--border-color] bg-[--bg-color-secondary] hover:border-[--text-primary] flex flex-col justify-between gap-4 p-3 rounded-sm group">
+                            <div class="flex flex-col lg:flex-row gap-4">
+                                <a aria-label="{{name}}" href="{{url}}" class="content-center">
+                                    {{#if profile_image}}
+                                        {{> images/profile-image-s classes="section-hero-authors-card-profile-img size-32 h-full max-w-max rounded-sm object-center object-cover"}}
+                                    {{/if}}
+                                </a>
+                                <div class="flex flex-col gap-4">
+                                    <div class="flex flex-row justify-between gap-4">
+                                    <a aria-label="{{name}}" href="{{url}}" class="section-hero-authors-card-name font-heading font-medium text-[--text-primary] text-base hover:text-[--text-secondary]"> {{name}} </a>
+                                    <a aria-label="More articles by {{name}}" href="{{url}}" class="flex items-center justify-end gap-2">
+                                        <span class="text-[--text-primary] text-sm font-medium hover:text-[--text-secondary]">( {{plural count.posts empty=(t 'No posts') singular=(t '1 post') plural=(t '% posts')}} )</span>
+                                    </a>
+                                    </div>
+                                    {{> author-social-links accounts=this size="size-5" slug=slug name=name website=website}}
+                                    {{#if bio}}
+                                        <p class="section-hero-authors-card-bio text-[--text-secondary] font-medium text-sm md:line-clamp-3"> {{bio}} </p>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/foreach}}
+                </div>
+            </div>
+        </section>
+    {{/if}}
+{{/get}}

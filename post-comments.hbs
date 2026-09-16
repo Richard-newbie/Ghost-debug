@@ -1,0 +1,115 @@
+{{!--
+COMMENTS LOGIC
+
+Site-wide settings:
+  @site.comments_enabled : true/false
+  @site.comments_access  : "all" | "paid" | "off"
+
+Requirements:
+- If comments are disabled site-wide (comments_enabled = false OR comments_access = "off"):
+    → render nothing (no comments, no CTA).
+- Otherwise, user can comment ONLY if:
+    1) Site-wide rule is satisfied, AND
+    2) They have access to the post (access = true).
+--}}
+
+{{#if @site.comments_enabled}}
+{{!-- If comments_access is "off", treat as disabled: render nothing --}}
+    {{#match @site.comments_access "off"}}
+    {{!-- Do not output anything --}}
+    {{!-- Comments enabled site-wide in some form --}}
+    {{else}}
+        {{!-- SITE-WIDE MODE 1: comments_access = "all"
+          Any member (free OR paid) may comment, as long as they have access to the post. --}}
+            {{#match @site.comments_access "all"}}
+                {{#if access}}
+                {{!-- Post is readable. Enforce "all members" rule for comments. --}}
+                    {{#if @member}}
+                    {{!-- Has post access AND is a member → show comments --}}
+                        <section class="py-10 xs:py-12 md:py-16 lg:border-b border-[--border-color]">
+                            <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+                                <div class="grid grid-cols-1 lg:mx-40 gap-16 lg:gap-12 mt-8 xs:mt-12">
+                                    <div class="flex flex-col gap-8">
+                                        <h2 class="text-2xl lg:text-3xl font-bold text-[--text-primary]">{{t "Comments"}}</h2>
+                                        {{comments title="" mode="auto" count=false}}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    {{else}}
+                        {{!-- Has post access but is not a member → CTA to become member --}}
+                        {{> cta
+                            title=(t "Subscribe to join the discussion.")
+                            description=(t "Please create an account to become a member and join the discussion.")
+                            button=(t "Sign up")
+                            button_link="/signup/"
+                        }}
+                    {{/if}}
+                {{else}}
+                {{!-- Viewer does NOT have access to the post content. Gate by post visibility. --}}
+                    {{#has visibility="members"}}
+                        {{> cta
+                        title=(t "Join to add a comment.")
+                        description=(t "Please create a free account to become a member and join the discussion.")
+                        button=(t "Join Free")
+                        }}
+                    {{/has}}
+                    {{#has visibility="paid"}}
+                        {{> cta
+                        title=(t "Access to comments is for premium members only.")
+                        description=(t "Please upgrade your account to join the discussion.")
+                        button=(t "Join Free")
+                        }}
+                    {{/has}}
+                    {{#has visibility="tiers"}}
+                        {{> cta
+                        title=(t "Access to comments is for selected tiers only.")
+                        description=(tiers prefix=(t 'Access is for members on following tier(s): ') suffix='')
+                        button=(t "Upgrade")
+                        }}
+                    {{/has}}
+                {{/if}}
+            {{!-- SITE-WIDE MODE 2: comments_access = "paid"
+              Only paid members may comment, and only if they have access to the post. --}}
+            {{else match @site.comments_access "paid"}}
+                {{#if access}}
+                {{!-- Post is readable. Enforce paid-only comments. --}}
+                    {{#if @member.paid}}
+                    {{!-- Paid member with access → show comments --}}
+                        {{> post-comments}}
+                    {{else}}
+                    {{!-- Not a paid member (either free member or logged out) → premium CTA --}}
+                        {{> cta
+                            title=(t "Access to comments is for premium members only.")
+                            description=(t "Please create a premium account and join the discussion.")
+                            button=(t "Sign up")
+                            button_link="/signup/"
+                        }}
+                    {{/if}}
+                {{else}}
+                {{!-- No post access. Combine post visibility + paid-only comments requirement. --}}
+                    {{#has visibility="members"}}
+                        {{> cta
+                        title=(t "Join to add a comment.")
+                        description=(t "Please create a free account to become a member and join the discussion.")
+                        button=(t "Join Free")
+                        }}
+                    {{/has}}
+                    {{#has visibility="paid"}}
+                        {{> cta
+                        title=(t "Access to comments is for premium members only.")
+                        description=(t "Please upgrade your account to join the discussion.")
+                        button=(t "Join Free")
+                        }}
+                    {{/has}}
+                    {{#has visibility="tiers"}}
+                        {{> cta
+                        title=(t "Access to comments is for selected tiers only.")
+                        description=(tiers prefix=(t 'Access is for members on following tier(s): ') suffix='')
+                        button=(t "Upgrade")
+                        }}
+                    {{/has}}
+                {{/if}}
+            {{/match}}
+    {{/match}}
+{{/if}}

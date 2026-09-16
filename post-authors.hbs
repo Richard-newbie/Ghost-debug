@@ -1,0 +1,23 @@
+<div class="flex items-center gap-3">
+    <span class="text-[--text-secondary] font-medium text-sm">
+        {{#has author="count:>1"}}
+            {{t "Authors"}}:
+        {{else}}
+            {{t "Written by"}}
+        {{/has}}
+    </span>
+    <div class="flex items-center flex-wrap gap-4">
+        {{#foreach authors}}
+            <a aria-label="{{name}}" href="{{url}}" class="flex items-center gap-2 group">
+                {{#if profile_image}}
+                    {{> images/profile-image-s classes="size-8 aspect-square rounded-full object-center object-cover"}}
+                {{else}}
+                    <span class="flex items-center justify-center size-8 aspect-square rounded-full bg-[--bg-color-secondary] border border-[--border-color]">
+                        <span class="text-sm text-[--text-primary] first-letter">{{name}}</span>
+                    </span>
+                {{/if}}
+                <span class="font-heading font-medium text-[--text-primary] text-sm group-hover:text-[--text-secondary]">{{name}}</span>
+            </a>
+        {{/foreach}}
+    </div>
+</div>

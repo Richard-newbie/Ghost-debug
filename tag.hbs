@@ -1,0 +1,73 @@
+{{!< default}}
+{{#contentFor 'title'}}{{meta_title}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{#tag}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/tag/{{slug}}/" hreflang="{{@custom.main_locale}}" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/tag/{{slug}}/" hreflang="x-default" />
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/tag/{{slug}}/" hreflang="hi" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/tag/{{slug}}/" hreflang="es" />
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+        {{/tag}}
+    {{/contentFor}}
+{{/if}}
+{{#tag}}
+<section class="section-tag py-6 xs:py-8 md:py-10" style="--accent-color: {{#if accent_color}}{{accent_color}}{{else}}var(--ghost-accent-color){{/if}};">
+  <div class="wrapper flex flex-col gap-6 xs:gap-8">
+
+    <div class="flex flex-col gap-2 xs:gap-3">
+        <h1 class="section-tag-name font-heading text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none" style="color: var(--accent-color);"> {{name}} </h1>
+        {{#if description}}
+          <p class="section-tag-description text-[--text-secondary] font-medium text-sm xs:text-base max-w-2xl"> {{description}} </p>
+        {{/if}}
+    </div>
+
+    {{!-- Divider --}}
+    <div class="h-px w-full" style="background: var(--accent-color);"></div>
+
+    {{!-- Lead zone (carousel or single lead) — populated by JS --}}
+    <div id="category-lead-zone" data-category="{{slug}}"></div>
+
+    {{!-- LATEST IN heading — built by JS only when there's a stream to go with it --}}
+    <div id="category-stream-heading" data-category-name="{{name}}"></div>
+
+    {{!-- Chronological stream — populated by JS --}}
+    <div id="category-stream-zone" class="flex flex-col gap-10"></div>
+
+    {{!-- Raw post data — hidden, JS reads this to build lead + stream --}}
+    <div id="category-raw-posts" style="display:none;">
+        {{#foreach posts}}
+            <div class="raw-post"
+                 data-title="{{title}}"
+                 data-url="{{url}}"
+                 data-image="{{img_url feature_image size='xl' format='webp'}}">
+            </div>
+        {{/foreach}}
+    </div>
+
+  </div>
+</section>
+{{/tag}}
+{{> join-populizt}}

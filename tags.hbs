@@ -1,0 +1,388 @@
+{{!< default}}
+{{#contentFor 'title'}}{{t "Tags"}}{{/contentFor}}
+
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/tags/" hreflang="{{@custom.main_locale}}" />
+            <link rel="alternate" href="{{@custom.main_locale_url}}/tags/" hreflang="x-default" />
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi/tags/" hreflang="hi" />
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es/tags/" hreflang="es" />
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+    {{/contentFor}}
+{{/if}}
+
+<section class="section-tags py-10 xs:py-12 md:py-16">
+    <div class="wrapper flex flex-col gap-12">
+        <h1 class="section-tags-title font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center">
+            {{t "Tags"}}
+        </h1>
+
+        {{!-- GRID: first page (SSR) + subsequent pages (JS) --}}
+        <div id="tags-grid" class="section-tags-loop grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+            {{!-- Server-render page 1 so there is content without JS --}}
+            {{#get "tags" include="count.posts" limit=@config.posts_per_page order="count.posts desc" filter="visibility:public"}}
+                {{#if tags}}
+                    {{#foreach tags}}
+                        <a href="{{url}}"
+                           aria-label="{{name}}"
+                           {{#if accent_color}}style="--accent-color:{{accent_color}}"{{/if}}
+                           class="section-tags-card border border-[--border-color] {{#if accent_color}}hover:border-[--accent-color]{{else}}hover:border-[--text-primary]{{/if}} flex flex-col justify-between gap-6 p-6 rounded-sm">
+                            <div class="flex flex-col gap-6">
+                                {{#if feature_image}}
+                                    {{> images/feature-image-m show_caption=false classes="section-tags-card-img w-full aspect-square rounded-full object-cover object-center"}}
+                                {{/if}}
+                                <h2 class="section-tags-card-name font-heading text-[--text-primary] font-medium text-xl xs:text-2xl hover:text-[--text-secondary]">
+                                    {{name}}
+                                </h2>
+                                {{#if description}}
+                                    <p class="section-tags-card-description text-[--text-secondary] font-medium text-sm -mt-2 xs:line-clamp-5">
+                                        {{description}}
+                                    </p>
+                                {{/if}}
+                            </div>
+                            <div class="text-[--text-primary] font-medium text-sm">
+                                {{plural count.posts empty=(t 'No posts') singular=(t '1 post') plural=(t '% posts')}}
+                            </div>
+                        </a>
+                    {{/foreach}}
+                {{/if}}
+            {{/get}}
+        </div>
+
+        {{!-- LOAD MORE BUTTON (disables & relabels when done) --}}
+        <div class="flex justify-center">
+            <button
+                id="load-tags"
+                class="rounded-sm border border-[--border-color] px-5 py-2 text-sm font-medium text-[--text-primary] hover:border-[--text-primary]"
+                data-start-page="2"  {{!-- because page 1 is SSR'ed above --}}
+                aria-label="{{t 'Load More Tags'}}">
+                {{t "Load More Tags"}}
+            </button>
+        </div>
+
+        <noscript>
+            <p class="text-center text-sm text-[--text-secondary] mt-2">
+                {{t "Enable JavaScript to load more tags."}}
+            </p>
+        </noscript>
+    </div>
+</section>
+
+{{!-- Official Ghost Content API client (UMD) --}}
+<script src="https://unpkg.com/@tryghost/content-api@1.12.0/umd/content-api.min.js" defer></script>
+
+<script>
+    (function () {
+        function onReady(fn){document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn);}
+
+        onReady(function(){
+            var $btn  = document.getElementById('load-tags');
+            var $grid = document.getElementById('tags-grid');
+            if (!$btn || !$grid) return;
+
+            // API config: prefer data-attrs; fall back to globals or origin
+            var apiUrl = ($btn.dataset.apiUrl || window.GHOST_API_URL || window.location.origin).replace(/\/$/, '');
+            var apiKey = $btn.dataset.apiKey || window.GHOST_CONTENT_API_KEY;
+
+            if (typeof GhostContentAPI === 'undefined') {
+                console.warn('GhostContentAPI library not loaded.');
+                return;
+            }
+            if (!apiKey) {
+                console.warn('Ghost Content API key not found. Define window.GHOST_CONTENT_API_KEY.');
+                return;
+            }
+
+            var api = new GhostContentAPI({ url: apiUrl, key: apiKey, version: 'v6.0' });
+
+            var page    = parseInt($btn.dataset.startPage || '2', 10); // next page after SSR
+            var limit   = GLOBAL.POSTS_PER_PAGE; // Ghost’s max page size is 100
+            var hasMore = true;
+            var loading = false;
+
+            function setAllLoadedState(){
+                $btn.disabled = true;
+                $btn.setAttribute('aria-disabled', 'true');
+                $btn.classList.add('opacity-60','cursor-not-allowed');
+                $btn.textContent = '{{t "All Tags Loaded"}}';
+                $btn.title = '{{t "All Tags Loaded"}}';
+            }
+            function restoreButtonLabel(label){
+                $btn.disabled = false;
+                $btn.removeAttribute('aria-disabled');
+                $btn.classList.remove('opacity-60','cursor-not-allowed');
+                $btn.textContent = label;
+                $btn.removeAttribute('title');
+            }
+
+            function postsCountText(n){
+                if (typeof n !== 'number') return '';
+                if (n === 0) return '{{t "No posts"}}';
+                if (n === 1) return "{{t '1 post'}}";
+                return n + "{{t ' posts'}}";
+            }
+
+            // --- width maps (tags)
+            const GHOST_WIDTHS_TAG = { xxs: 50, xs: 100, s: 300, m: 500 };
+
+            // Locale prefix detector: "/es/*" -> "/es", otherwise ""
+            const LOCALE_SEGMENT_RE = /^[a-z]{2}(?:-[a-z]{2})?$/i;
+            const localePrefix = (function getLocalePrefix() {
+                const first = window.location.pathname.split('/').filter(Boolean)[0] || '';
+                return LOCALE_SEGMENT_RE.test(first) ? `/${first}` : '';
+            })();
+
+            // escape helper
+            function esc(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+            // Is this a Ghost-managed image under /content/images ?
+            function isGhostManaged(src) {
+                try {
+                    const u = new URL(src, window.location.origin);
+                    return /\/content\/images\//i.test(u.pathname);
+                } catch { return false; }
+            }
+
+            /**
+             * Build a Ghost transform URL with locale-aware base path:
+             * e.g. "/es/content/images/size/w700/format/avif/2024/05/chris.png"
+             */
+            function ghostTransformedUrl(src, { width, format } = {}) {
+                if (!src) return "";
+                try {
+                    const u = new URL(src, window.location.origin);
+                    if (!isGhostManaged(u.toString())) return "";
+
+                    // Strip any leading "<locale>/content/images/" or "content/images/" from the original path
+                    const CONTENT_PREFIX_RE = /^(?:\/[a-z]{2}(?:-[a-z]{2})?)?\/content\/images\//i;
+                    const tail = u.pathname.replace(CONTENT_PREFIX_RE, ""); // -> "2024/05/chris.png"
+
+                    const fmt = format ? `format/${format}/` : "";
+                    // Insert localePrefix if present, then compose final path
+                    u.pathname = `${localePrefix}/content/images/size/w${width}/${fmt}${tail}`.replace(/\/{2,}/g, '/');
+                    return u.toString();
+                } catch {
+                    return "";
+                }
+            }
+
+            // --- Unsplash helpers (images.unsplash.com via imgix) ------------------
+            // Build Unsplash URL with width + optional format (webp/avif)
+            function unsplashTransformedUrl(src, { width, format } = {}) {
+                try {
+                    const u = new URL(src);
+                    if (u.hostname !== "images.unsplash.com") return "";
+                    // Preserve existing params; override width & format
+                    u.searchParams.set("w", String(width));
+                    // Keep existing fit/max/crop params the user had
+                    if (format) u.searchParams.set("fm", format);
+                    else u.searchParams.delete("fm"); // original format fallback
+                    return u.toString();
+                } catch { return ""; }
+            }
+
+            function buildGhostSrcset(src, widths, format) {
+                const parts = [];
+                for (const w of widths) {
+                    const url = ghostTransformedUrl(src, { width: w, format });
+                    if (!url) return "";
+                    parts.push(`${url} ${w}w`);
+                }
+                return parts.join(", ");
+            }
+
+            function buildUnsplashSrcset(src, widths, format) {
+                const parts = [];
+                for (const w of widths) {
+                    const url = unsplashTransformedUrl(src, { width: w, format });
+                    if (!url) return "";
+                    parts.push(`${url} ${w}w`);
+                }
+                return parts.join(", ");
+            }
+
+            // Try Ghost first; if not available, try Unsplash; else return ""
+            function buildSrcsetAny(src, widths, format) {
+                const ghost = buildGhostSrcset(src, widths, format);
+                if (ghost) return ghost;
+                const splash = buildUnsplashSrcset(src, widths, format);
+                if (splash) return splash;
+                return "";
+            }
+
+            // Single URL for the fallback <img> (try Ghost, then Unsplash, else original)
+            function singleTransformedUrlAny(src, width, format) {
+                return (
+                    ghostTransformedUrl(src, { width, format }) ||
+                    unsplashTransformedUrl(src, { width, format }) ||
+                    src
+                );
+            }
+
+            // ---- Tag feature image <picture> builder (AVIF -> WebP -> original) ---
+            function tagPictureHTML(t, opts = {}) {
+                const img = t && t.feature_image;
+                if (!img) return "";
+
+                const widths = [GHOST_WIDTHS_TAG.xxs, GHOST_WIDTHS_TAG.xs, GHOST_WIDTHS_TAG.s, GHOST_WIDTHS_TAG.m];
+                const sizesAttr =
+                    '((max-width: 50px)) 50px, ((min-width: 50px) and (max-width: 100px)) 100px, ' +
+                    '((min-width: 100px) and (max-width: 300px)) 300px, (min-width: 300px) 500px';
+
+                const classes = opts.classes || 'section-tags-card-img w-full aspect-square rounded-full object-cover object-center';
+
+                // Build srcsets from whatever pipeline is available
+                const avifSet = buildSrcsetAny(img, widths, "avif");
+                const webpSet = buildSrcsetAny(img, widths, "webp");
+                const origSet = buildSrcsetAny(img, widths, undefined);
+
+                // Fallback 'src' for <img>
+                const srcM = singleTransformedUrlAny(img, GHOST_WIDTHS_TAG.m, undefined);
+
+                // Compose <picture>: add sources conditionally
+                const lazyAttrs = opts.hero ? '' : ' loading="lazy" decoding="async"';
+                let html = '<picture>';
+
+                // If you expect animated images from external CDNs, consider omitting AVIF:
+                if (avifSet) html += '<source srcset="'+avifSet+'" sizes="'+sizesAttr+'" type="image/avif">';
+                if (webpSet) html += '<source srcset="'+webpSet+'" sizes="'+sizesAttr+'" type="image/webp">';
+
+                // Always include an <img> fallback; prefer origSet if we have it
+                if (origSet) {
+                    html += '<img'+lazyAttrs
+                        + ' srcset="'+origSet+'"'
+                        + ' src="'+srcM+'"'
+                        + ' sizes="'+sizesAttr+'"'
+                        + ' class="'+esc(classes)+' feature-image size-m"'
+                        + ' alt="'+esc(t.name)+'">';
+                } else {
+                    // No transform support at all → plain original
+                    html += '<img'+lazyAttrs
+                        + ' src="'+img+'"'
+                        + ' class="'+esc(classes)+'"'
+                        + ' alt="'+esc(t.name)+'">';
+                }
+
+                html += '</picture>';
+                return html;
+            }
+
+            function tagCardHTML(t){
+                var styleAttr = t.accent_color ? ' style="--accent-color:' + t.accent_color + ';"' : '';
+                var hoverClass = t.accent_color ? 'hover:border-[--accent-color]' : 'hover:border-[--text-primary]';
+                var imgHTML = tagPictureHTML(t);
+                var descHTML = t.description ? '<p class="section-tags-card-description text-[--text-secondary] font-medium text-sm -mt-2 xs:line-clamp-5">'+t.description+'</p>' : '';
+
+                return (
+                    '<a href="'+t.url+'" aria-label="'+t.name+'"'+styleAttr+' class="section-tags-card border border-[--border-color] '+hoverClass+' flex flex-col justify-between gap-6 p-6 rounded-sm">'
+                    + '<div class="flex flex-col gap-6">'
+                    + imgHTML
+                    + '<h2 class="section-tags-card-name font-heading text-[--text-primary] font-medium text-xl xs:text-2xl hover:text-[--text-secondary]">'+t.name+'</h2>'
+                    + descHTML
+                    + '</div>'
+                    + '<div class="text-[--text-primary] font-medium text-sm">'+postsCountText(t.count && t.count.posts)+'</div>'
+                    + '</a>'
+                );
+            }
+
+            // ---- Preflight: if SSR page already contains all tags, disable & relabel immediately
+            var ssrCount = $grid.querySelectorAll('.section-tags-card').length;
+
+            if (ssrCount === 0 || ssrCount < limit) {
+                // Fewer than 100 rendered ⇒ no page 2
+                hasMore = false;
+                setAllLoadedState();
+            } else {
+                // Exactly 100 rendered ⇒ probe page 2 cheaply (limit=1)
+                api.tags.browse({ page: page, limit: 1, fields: 'id', filter: 'visibility:public' })
+                    .then(function (arr) {
+                        if (!arr || !arr.length) {
+                            hasMore = false;
+                            setAllLoadedState();
+                        }
+                    })
+                    .catch(function (err) {
+                        if (err && (err.name === 'NotFoundError' || err.status === 404)) {
+                            hasMore = false;
+                            setAllLoadedState();
+                        } else {
+                            console.warn('Tag page probe failed:', err);
+                        }
+                    });
+            }
+
+            async function loadNextPage(){
+                if (loading || !hasMore) return;
+                loading = true;
+                var initialLabel = $btn.textContent;
+                $btn.disabled = true;
+                $btn.textContent = '{{t "Loading…"}}';
+
+                try {
+                    var list = await api.tags.browse({
+                        page: page,
+                        limit: limit,
+                        include: 'count.posts',
+                        order: 'count.posts desc',
+                        filter: 'visibility:public'
+                    });
+
+                    list.forEach(function(t){
+                        $grid.insertAdjacentHTML('beforeend', tagCardHTML(t));
+                    });
+
+                    var meta = list && list.meta && list.meta.pagination;
+                    if (meta) {
+                        hasMore = Boolean(meta.next);
+                        page = meta.next || page;
+                    } else {
+                        hasMore = list.length === limit;
+                        if (hasMore) page += 1;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    var msg = document.createElement('p');
+                    msg.className = 'text-center text-sm text-red-600';
+                    msg.textContent = 'Failed to load tags: ' + (err && err.message ? err.message : err);
+                    $grid.appendChild(msg);
+                    // allow retry
+                    hasMore = true;
+                } finally {
+                    loading = false;
+                    if (hasMore) {
+                        restoreButtonLabel(initialLabel);
+                    } else {
+                        setAllLoadedState();
+                    }
+                }
+            }
+
+            $btn.addEventListener('click', loadNextPage);
+        });
+    })();
+</script>
+{{#if @site.members_enabled}}
+    {{> subscribe-form index="last"}}
+{{/if}}

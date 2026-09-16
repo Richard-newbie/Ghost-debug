@@ -1,0 +1,19 @@
+{{#if @site.logo}}
+    {{#if is_footer}}
+        {{!-- Always use Dark mode logo for Footer if available --}}
+        <a aria-label="{{@site.title}}" href="{{@site.url}}" title="{{@site.title}}" class="site-logo-footer theme-footer-logo">
+            <img {{#if @custom.logo_for_dark_mode}}src="{{@custom.logo_for_dark_mode}}" {{else}}src="{{@site.logo}}" {{/if}} alt="{{@site.title}}" class="h-6 lg:h-8 w-auto" loading="lazy">
+        </a>
+    {{else}}
+        {{!-- Site logo --}}
+        <a aria-label="{{@site.title}}" href="{{@site.url}}" title="{{@site.title}}" class="site-logo theme-light-logo">
+            <img src="{{@site.logo}}" alt="{{@site.title}}" class="h-6 lg:h-8 w-auto" loading="lazy">
+        </a>
+        <a aria-label="{{@site.title}}" href="{{@site.url}}" title="{{@site.title}}" class="site-logo theme-dark-logo">
+            <img {{#if @custom.logo_for_dark_mode}}src="{{@custom.logo_for_dark_mode}}" {{else}}src="{{@site.logo}}" {{/if}} alt="{{@site.title}}" class="h-6 lg:h-8 w-auto" loading="lazy">
+        </a>
+    {{/if}}
+{{else}}
+    {{!-- Show site title if no logo available or set --}}
+    <a aria-label="{{@site.title}}" class="title-logo font-heading {{#if is_footer}}text-white{{else}}text-[--text-primary]{{/if}} text-xl xs:text-2xl lg:text-3xl font-medium leading-normal" href="{{@site.url}}" title="{{@site.title}}"> {{@site.title}} </a>
+{{/if}}

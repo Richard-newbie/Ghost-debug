@@ -1,0 +1,64 @@
+{{!-- Markup to show the 3 left side featured posts on the homepage --}}
+<div class="hero-left flex-col flex xs:flex-row md:flex-col justify-between gap-10 xs:gap-5 md:gap-6 pb-10 md:pb-0 pt-10 md:pt-0 border-b md:border-b-0 border-[--border-color]">
+    {{#match @custom.hero_left_column_posts "Featured Posts"}}
+        {{#match @custom.carousel_slider_posts "Featured Posts"}}
+            {{#match @custom.hero_center_column_posts "Featured Posts"}}
+                {{#get "posts" filter="featured:true" order="published_at desc" limit="7" include="tags,authors"}}
+                    {{#foreach posts from="5"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{else}}
+                {{#get "posts" filter="featured:true" order="published_at desc" limit="6" include="tags,authors"}}
+                    {{#foreach posts from="4"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_center_column_posts "Featured Posts"}}
+                {{#get "posts" filter="featured:true" order="published_at desc" limit="4" include="tags,authors"}}
+                    {{#foreach posts from="2"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{else}}
+                {{#get "posts" filter="featured:true" order="published_at desc" limit="3" include="tags,authors"}}
+                    {{#foreach posts}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{else}}
+        {{#match @custom.carousel_slider_posts "Latest Posts"}}
+            {{#match @custom.hero_center_column_posts "Latest Posts"}}
+                {{#get "posts" order="published_at desc" limit="7" include="tags,authors"}}
+                    {{#foreach posts from="5"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{else}}
+                {{#get "posts" order="published_at desc" limit="6" include="tags,authors"}}
+                    {{#foreach posts from="4"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_center_column_posts "Latest Posts"}}
+                {{#get "posts" order="published_at desc" limit="4" include="tags,authors"}}
+                    {{#foreach posts from="2"}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{else}}
+                {{#get "posts" order="published_at desc" limit="3" include="tags,authors"}}
+                    {{#foreach posts}}
+                        {{> post-card-hero-left}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{/match}}
+</div>

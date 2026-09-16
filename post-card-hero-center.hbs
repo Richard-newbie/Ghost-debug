@@ -1,0 +1,30 @@
+<div class="flex flex-col justify-between gap-4 group">
+    <div class="flex flex-col gap-4">
+        {{#if feature_image}}
+            <div class="w-full h-auto lg:h-[26.33rem] aspect-[1.5] lg:aspect-auto overflow-hidden rounded-sm relative">
+                <a aria-label="{{title}}" href="{{url}}">
+                    {{> images/feature-image-xxl show_caption=false classes="h-full w-full object-cover object-center group-hover:scale-[1.025] transition-transform duration-300"}}
+                </a>
+                {{> post-identifier-icons
+                    div_classes="aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1"
+                    img_classes="filter-white h-4"
+                    is_featured_icon_left=true
+                }}
+            </div>
+        {{/if}}
+        {{#if tags}}
+            <div class="flex items-center gap-2 flex-wrap">
+                {{#foreach tags}}
+                    <a aria-label="{{name}}" href="{{url}}" class="text-sm text-[--text-accent] uppercase font-medium py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                {{/foreach}}
+            </div>
+        {{/if}}
+        <a aria-label="{{title}}" href="{{url}}" class="flex flex-col gap-4">
+            <h2 class="font-heading text-[--text-primary] font-medium text-xl xs:text-2xl lg:text-3xl hover:underline underline-offset-2"> {{title}} </h2>
+            <p class="text-sm xs:text-base font-medium text-[--text-secondary]"> {{excerpt}} </p>
+        </a>
+    </div>
+    <div class="flex flex-col gap-4">
+        {{> post-meta}}
+    </div>
+</div>

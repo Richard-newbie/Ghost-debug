@@ -1,0 +1,290 @@
+{{!-- Markup to show the 6 right side latest posts on the homepage --}}
+{{#match @custom.hero_right_column_posts "Featured Posts"}}
+    {{#match @custom.carousel_slider_posts "Featured Posts"}}
+        {{#match @custom.hero_center_column_posts "Featured Posts"}}
+            {{#match @custom.hero_left_column_posts "Featured Posts"}}
+                {{! -- if carousel, center and left are featured --}}
+                {{#get "posts" limit="13" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="8"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+                {{!-- if carousel and center are featured --}}
+                {{#get "posts" limit="10" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="5"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_left_column_posts "Featured Posts"}}
+                {{!-- if carousel and left are featured --}}
+                {{#get "posts" limit="12" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="7"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+                {{!-- if carousel are featured --}}
+                {{#get "posts" limit="9" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="4"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{else}}
+        {{#match @custom.hero_center_column_posts "Featured Posts"}}
+            {{#match @custom.hero_left_column_posts "Featured Posts"}}
+                {{!-- if center and left are featured --}}
+                {{#get "posts" limit="10" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="5"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+                {{!-- if center are featured --}}
+                {{#get "posts" limit="7" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="2"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_left_column_posts "Featured Posts"}}
+                {{!-- if left are featured --}}
+                {{#get "posts" limit="9" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="4"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+                {{!-- if nothing is featured --}}
+                {{#get "posts" limit="6" filter="featured:true" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Featured"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{/match}}
+{{/match}}
+
+{{!-- Latest Posts --}}
+{{#match @custom.hero_right_column_posts "Latest Posts"}}
+    {{#match @custom.carousel_slider_posts "Latest Posts"}}
+        {{#match @custom.hero_center_column_posts "Latest Posts"}}
+            {{#match @custom.hero_left_column_posts "Latest Posts"}}
+            {{! -- if carousel, center and left are Latest --}}
+                {{#get "posts" limit="13" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="8"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+            {{!-- if carousel and center are Latest --}}
+                {{#get "posts" limit="10" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="5"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_left_column_posts "Latest Posts"}}
+            {{!-- if carousel and left are Latest --}}
+                {{#get "posts" limit="12" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="7"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+            {{!-- if carousel are Latest --}}
+                {{#get "posts" limit="9" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="4"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{else}}
+        {{#match @custom.hero_center_column_posts "Latest Posts"}}
+            {{#match @custom.hero_left_column_posts "Latest Posts"}}
+            {{!-- if center and left are Latest --}}
+                {{#get "posts" limit="10" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="5"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+            {{!-- if center are Latest --}}
+                {{#get "posts" limit="7" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="2"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{else}}
+            {{#match @custom.hero_left_column_posts "Latest Posts"}}
+            {{!-- if left are Latest --}}
+                {{#get "posts" limit="9" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts from="4"}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{else}}
+            {{!-- if nothing is Latest --}}
+                {{#get "posts" limit="6" include="tags,authors" order="published_at desc"}}
+                    {{#if posts}}
+                        <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                            <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{t "Latest"}} </h2>
+                            <div class="hidden md:block h-px bg-[--border-color]"></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                                {{#foreach posts}}
+                                    {{> post-card-hero-right}}
+                                {{/foreach}}
+                            </div>
+                        </div>
+                    {{/if}}
+                {{/get}}
+            {{/match}}
+        {{/match}}
+    {{/match}}
+{{/match}}
+<!-- Stop Ghost from complaining: {{@custom.hero_right_column_posts_tag_slug}} -->
+{{!-- Tag Slug --}}
+{{#match @custom.hero_right_column_posts "Tag"}}
+    {{#get "posts" limit="6" filter="primary_tag:{{@custom.hero_right_column_posts_tag_slug}}" include="tags,authors" order="published_at desc" as |tag_posts|}}
+        {{#if tag_posts}}
+            <div class="hero-right flex flex-col gap-10 xs:gap-5 md:gap-8 pb-10 md:pb-0 pt-10 md:pt-0">
+                <h2 class="font-heading text-[--text-primary] text-xl xs:text-2xl lg:text-3xl font-medium leading-normal"> {{#get "tags" limit="1" filter="slug:{{@custom.hero_right_column_posts_tag_slug}}"}}{{#foreach tags}}{{name}}{{/foreach}}{{/get}} </h2>
+                <div class="hidden md:block h-px bg-[--border-color]"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-10 xs:gap-5 md:gap-8">
+                    {{#foreach tag_posts}}
+                        {{> post-card-hero-right}}
+                    {{/foreach}}
+                </div>
+            </div>
+        {{/if}}
+    {{/get}}
+{{/match}}

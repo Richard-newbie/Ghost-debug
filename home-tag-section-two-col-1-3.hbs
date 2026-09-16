@@ -1,0 +1,99 @@
+{{!-- Markup to show the tag section in two column format in 1|3 layout on homepage --}}
+<section class="home-tag-1-3 py-10 xs:py-12 md:py-16 tag-section-{{slug}}">
+    <div class="wrapper flex flex-col gap-6">
+        <div class="flex items-center justify-between gap-4">
+            <h1 class="home-tag-name font-heading text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{name}} </h1>
+            <a aria-label="{{name}}" href="{{url}}" class="flex items-center gap-2 group">
+                <span class="text-[--text-primary] text-sm font-medium"> {{t "Read all in "}}{{name}} </span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-5 transition-transform group-hover:translate-x-1 icon icon-tabler icon-tabler-arrow-right">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M5 12l14 0" />
+    <path d="M13 18l6 -6" />
+    <path d="M13 6l6 6" />
+</svg>
+            </a>
+        </div>
+        <div class="bg-[--border-color] h-px w-full"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 xs:gap-5 md:gap-8">
+            {{!-- 1 Post on left --}}
+            {{#get 'posts' filter='tags:{{slug}}' limit="1" include="tags,authors"}}
+                {{#foreach posts}}
+                    <div class="home-tag-card flex flex-col gap-4 group">
+                        <div class="flex flex-col gap-4">
+                            {{#if feature_image}}
+                                <div class="w-full h-auto lg:h-[26.33rem] aspect-[1.5] lg:aspect-auto overflow-hidden rounded-sm relative">
+                                    <a aria-label="{{title}}" href="{{url}}">
+                                        {{> images/feature-image-xxl show_caption=false classes="home-tag-card-img h-full w-full object-cover object-center group-hover:scale-[1.025] transition-transform duration-300"}}
+                                    </a>
+
+                                    {{> post-identifier-icons
+                                            div_classes="aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1"
+                                            img_classes="filter-white h-4"
+                                            is_featured_icon_left=true
+                                        }}
+                                </div>
+                            {{/if}}
+                            {{#if tags}}
+                                <div class="home-tag-card-tags flex items-center gap-2 flex-wrap">
+                                    {{#foreach tags}}
+                                        <a aria-label="{{name}}" aria-label="{{name}}" href="{{url}}" class="text-sm text-[--text-accent] font-medium py-0.5 w-min rounded-sm text-nowrap uppercase"> {{name}} </a>
+                                    {{/foreach}}
+                                </div>
+                            {{/if}}
+                            <a aria-label="{{title}}" href="{{url}}" class="flex flex-col gap-4">
+                                <h2 class="home-tag-card-title font-heading text-[--text-primary] font-medium text-base xs:text-2xl lg:text-3xl lg:line-clamp-2 hover:underline underline-offset-2"> {{title}} </h2>
+                                <p class="home-tag-card-excerpt text-sm xs:text-base font-medium text-[--text-secondary]"> {{excerpt}} </p>
+                            </a>
+                        </div>
+                        <div class="home-tag-card-meta flex flex-col gap-4">
+                            {{> post-meta}}
+                        </div>
+                    </div>
+                {{/foreach}}
+            {{/get}}
+            {{!-- 3 posts on right --}}
+            <div class="border-t border-l-0 lg:border-t-0 lg:border-l border-[--border-color] pt-10 xs:pt-5 lg:pl-8 md:pt-8 lg:pt-0 flex flex-col gap-10 xs:gap-5 md:gap-8">
+                {{#get 'posts' filter='tags:{{slug}}' limit="4" include="tags,authors"}}
+                    {{#foreach posts from="2"}}
+                        <div class="xs:h-52 group flex flex-col xs:flex-row gap-5 md:gap-8">
+                            {{#if feature_image}}
+                                <div class="flex-shrink-0 xs:h-52 aspect-[1.5] xs:aspect-square md:aspect-[1.5] lg:aspect-square rounded-sm overflow-hidden relative">
+                                    <a aria-label="{{title}}" href="{{url}}">
+                                        {{> images/feature-image-xl show_caption=false classes="h-full w-full object-cover object-center group-hover:scale-[1.025] transition-transform duration-300"}}
+                                    </a>
+
+                                    {{> post-identifier-icons
+                                        div_classes="aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1"
+                                        img_classes="filter-white h-4"
+                                        is_featured_icon_left=true
+                                    }}
+                                </div>
+                            {{/if}}
+                            <div class="flex flex-col justify-between gap-4 xs:gap-2">
+                                <div class="flex flex-col gap-4 xs:gap-2">
+                                    {{#if tags}}
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        {{#foreach tags}}
+                                            <a aria-label="{{name}}" href="{{url}}" class="text-sm text-[--text-accent] font-medium py-0.5 w-min rounded-sm text-nowrap uppercase"> {{name}} </a>
+                                        {{/foreach}}
+                                    </div>
+                                    {{/if}}
+                                    <a aria-label="{{title}}" href="{{url}}" class="flex flex-col gap-4 xs:gap-2">
+                                        <h2 class="font-heading text-[--text-primary] font-medium text-base xs:text-xl lg:text-lg xs:line-clamp-2 hover:underline underline-offset-2"> {{title}} </h2>
+                                        <p class="text-sm font-medium text-[--text-secondary] xs:line-clamp-3"> {{excerpt}} </p>
+                                    </a>
+                                </div>
+                                <div class="flex flex-col gap-4 xs:gap-2">
+                                    {{> post-meta}}
+                                </div>
+                            </div>
+                        </div>
+                        {{^if @last}}
+                            <div class="h-px bg-[--border-color] w-full"></div>
+                        {{/if}}
+                    {{/foreach}}
+                {{/get}}
+            </div>
+        </div>
+    </div>
+</section>

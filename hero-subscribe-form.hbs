@@ -1,0 +1,49 @@
+
+{{!-- If subscription is invite-only --}}
+{{#if @site.members_invite_only}}
+    <div class="hero-subscribe-form hero-bottom flex items-end px-0 lg:px-5 lg:pt-10 lg:border-x border-[--border-color]">
+        <div class="border border-[--border-color] bg-[--bg-color-secondary] rounded-sm p-5 md:p-8 md:py-16 w-full mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+            <h2 class="font-heading max-w-xl text-center text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{t "Subscription for {title} is by invite only." title=@site.title}} </h2>
+            <p class="text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm"> {{t "Please contact site owner for more details and access."}} </p>
+            <p class="text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm"> {{t "Already have an account?"}} <a class="underline" href="/signin/" {{#if @custom.use_portal_links}} data-portal="signin"{{/if}}>{{t "Sign in"}}</a></p>
+        </div>
+    </div>
+{{else}}
+{{!-- Markup to show the subscribe form just below the center post on the homepage --}}
+    <div class="hero-subscribe-form hero-bottom flex items-end px-0 lg:px-5 lg:pt-10 lg:border-x border-[--border-color]">
+        <div class="border border-[--border-color] bg-[--bg-color-secondary] rounded-sm p-5 md:p-8 md:py-16 w-full mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+            <h2 class="font-heading max-w-xl text-center text-[--text-primary] text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{t "Sign up for {title} newsletters." title=@site.title}} </h2>
+            <p class="text-[--text-secondary] font-medium text-center text-sm xs:text-base lg:text-sm"> {{t "Stay up to date with curated collection of our top stories."}} </p>
+            <form data-members-form="subscribe" class="subscription-form max-w-[40rem] flex flex-col items-center justify-center gap-4 lg:gap-6 w-full">
+                <div class="flex flex-col xs:flex-row items-center justify-center gap-4 w-full">
+                    <input data-members-email type="email" name="email" required placeholder="jamie@example.com" class="flex-1 w-full xs:w-auto border border-[--border-color-secondary] bg-[--bg-color] rounded-sm placeholder:text-[--text-secondary] text-[--text-primary] text-sm p-3 xs:p-3.5 outline-none" />
+                    <button type="submit" class="default-button w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                        <span class="h-[26px] flex items-center justify-center"> {{t "Subscribe Now"}} </span>
+                    </button>
+                    <button type="submit" class="error-button w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                        <span class="h-[26px] flex items-center justify-center"> {{t "Try again"}} </span>
+                    </button>
+                    <button type="submit" class="loading-button w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                        <span class="h-[26px] flex items-center justify-center"> {{t "Please wait"}} </span>
+                    </button>
+                    <button type="submit" class="success-button w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                        <span class="h-[26px] flex items-center justify-center"> {{t "Thank you"}} </span>
+                    </button>
+                </div>
+                <div class="flex items-center justify-center gap-2 subscribe-form-agreement">
+                    <input type="checkbox" name="terms" id="terms-home-hero" required />
+                    <label for="terms-home-hero" class="text-xs text-[--text-primary]">
+                        {{{t "I agree to the website's {terms} and {privacy-policy}."
+                             terms=(concat "<a aria-label=\"Terms\" href=\"" @site.url "/terms/\" target=\"_blank\">Terms</a>")
+                             privacy-policy=(concat "<a aria-label=\"Privacy Policy\" href=\"" @site.url "/privacy-policy/\" target=\"_blank\">Privacy Policy</a>")
+                        }}}
+                    </label>
+                </div>
+                <div class="message-wrapper flex flex-col xs:flex-row items-center justify-center w-full">
+                    <small class="success-message">{{t "Please check your inbox and confirm."}}</small>
+                    <small class="error-message">{{t "Something went wrong. Please try again."}}</small>
+                </div>
+            </form>
+        </div>
+    </div>
+{{/if}}

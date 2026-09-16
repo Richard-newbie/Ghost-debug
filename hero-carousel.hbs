@@ -1,0 +1,38 @@
+{{#contentFor 'styles'}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+{{/contentFor}}
+{{#contentFor 'scripts'}}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    try {
+        var swiper = new Swiper(".heroSwiper", {
+            loop: true,
+            pagination: { el: ".hero-swiper-pagination", clickable: true },
+            autoplay: { delay: 4000, pauseOnMouseEnter: true },
+        });
+    } catch (e) {
+        console.warn('[theme] Swiper init failed:', e);
+    }
+</script>
+{{/contentFor}}
+<section class="relative z-0">
+    <div class="swiper heroSwiper relative">
+        <div class="swiper-wrapper">
+            {{#match @custom.carousel_slider_posts "Featured Posts"}}
+                {{#get "posts" filter="featured:true" order="published_at desc" limit="6" include="tags,authors" as |post|}}
+                    {{#foreach post}}
+                        {{> post-card-carousel}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+            {{#match @custom.carousel_slider_posts "Latest Posts"}}
+                {{#get "posts" order="published_at desc" limit="6" include="tags,authors" as |post|}}
+                    {{#foreach post}}
+                        {{> post-card-carousel}}
+                    {{/foreach}}
+                {{/get}}
+            {{/match}}
+        </div>
+        <div class="hero-swiper-pagination absolute !bottom-6 md:!bottom-6 left-0 z-10 flex justify-center"></div>
+    </div>
+</section>

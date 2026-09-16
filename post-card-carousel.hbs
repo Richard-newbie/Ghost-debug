@@ -1,0 +1,14 @@
+<div class="swiper-slide hero-carousel-card">
+    <a aria-label="{{title}}" href="{{url}}"
+        class="block relative w-full aspect-[1.5] sm:aspect-[2.2] md:aspect-video bg-[--carousel-overlay] overflow-hidden">
+        {{> images/feature-image-xxl show_caption=false classes="w-full h-full object-contain object-center"}}
+    </a>
+    <div class="wrapper pt-4 pb-2">
+        <a aria-label="{{title}}" href="{{url}}">
+            <h2
+                class="hero-carousel-card-title font-heading text-[--text-primary] font-medium text-lg xs:text-xl hover:underline underline-offset-2">
+                {{title}}
+            </h2>
+        </a>
+    </div>
+</div>

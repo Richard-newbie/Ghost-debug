@@ -1,0 +1,69 @@
+{{!< default}}
+{{#contentFor 'title'}}{{t "Archive"}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/archive/" hreflang="{{@custom.main_locale}}" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/archive/" hreflang="x-default" />
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/archive/" hreflang="hi" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/archive/" hreflang="es" />
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+<section class="section-archive py-10 xs:py-12 md:py-16">
+  <div class="wrapper flex flex-col items-center gap-12">
+    <div class="flex flex-col gap-2 xs:gap-4">
+      <h1 class="section-archive-title font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center"> {{t "Archive"}} </h1>
+      <p class="section-archive-description text-[--text-secondary] font-medium text-sm xs:text-base text-center"> {{t "Browse the complete archive of {total} posts." total=pagination.total}} </p>
+    </div>
+    <div class="section-archive-loop js-post-list flex flex-col w-full max-w-3xl">
+      {{#foreach posts}}
+        <div class="section-archive-card js-post-card post-month-{{date format="MM-YYYY" locale="en"}}">
+          <h2 class="text-sm xs:text-base text-[--text-primary] font-bold py-2 border-b-2 border-[--border-color] archive-post-month-label"> {{date format="MMMM YYYY"}} </h2>
+          <ul class="flex flex-col">
+            <li class="section-archive-card-li archive py-4 border-b border-[--border-color] group">
+              <div class="icons flex gap-2 items-center lg:w-12">
+                {{> post-identifier-icons
+                  div_classes="aspect-square rounded-sm flex items-center justify-center cursor-pointer border border-[--border-color] h-5"
+                  img_classes="filter-gray group-hover:filter-theme h-2/3"
+                }}
+              </div>
+              <a href="{{url}}" aria-label="{{title}}" class="section-archive-card-li-title link inline-block w-full lg:max-w-2xl text-sm font-medium text-[--text-secondary] group-hover:text-[--text-primary]"> {{title}} </a>
+              {{#primary_tag}}
+                <div class="section-archive-card-li-tag tags flex items-center lg:justify-end gap-2 flex-wrap">
+                  <a href="{{url}}" aria-label="{{name}}" class="text-xs text-[--text-secondary] group-hover:text-[--text-primary] font-medium border-[--border-color] border px-1.5 py-0.5 w-min rounded-sm hover:bg-[--tag-hover] text-nowrap"> {{name}} </a>
+                </div>
+              {{/primary_tag}}
+            </li>
+          </ul>
+        </div>
+      {{/foreach}}
+    </div>
+  </div>
+    <div class="wrapper flex flex-col items-center gap-12 pt-10 xs:pt-12 md:pt-16">
+        {{!-- Show pagination --}}
+        {{pagination}}
+    </div>
+</section>
+{{> join-populizt}}

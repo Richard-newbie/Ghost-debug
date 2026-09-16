@@ -1,0 +1,252 @@
+{
+    "name": "crimson",
+    "description": "A Premium Ghost Theme by Theme Up Studio",
+    "demo": "https://crimson.themeupstudio.com",
+    "version": "3.0.0",
+    "engines": {
+        "ghost": ">=6.0.0"
+    },
+    "scripts": {
+        "dev": "rollup -c --environment BUILD:development -w",
+        "build": "rollup -c --environment BUILD:production",
+        "zip": "npm run build && mkdir -p zip && rm -f zip/crimson.zip && zip -r zip/crimson.zip . -x \"node_modules/*\" \"zip/*\" \".idea/*\" \".vscode/*\" \".git/*\" \".git/**\" \"*.map\"",
+        "test": "npx gscan .",
+        "pretest": "npm run build"
+    },
+    "author": {
+        "name": "Theme Up Studio",
+        "email": "hello@themeupstudio.com",
+        "url": "https://www.themeupstudio.com"
+    },
+    "gpm": {
+        "type": "theme",
+        "categories": [
+            "Minimal",
+            "Magazine",
+            "News",
+            "Newsletter"
+        ]
+    },
+    "keywords": [
+        "ghost",
+        "theme",
+        "ghost-theme"
+    ],
+    "devDependencies": {
+        "@babel/core": "^7.24.0",
+        "@babel/preset-env": "^7.24.0",
+        "@rollup/plugin-babel": "^6.0.4",
+        "@rollup/plugin-commonjs": "^29.0.0",
+        "@rollup/plugin-node-resolve": "^16.0.0",
+        "@rollup/plugin-terser": "^0.4.4",
+        "bestzip": "^2.2.1",
+        "postcss": "^8.4.33",
+        "postcss-import": "^16.0.1",
+        "postcss-preset-env": "^10.0.0",
+        "rollup": "^4.12.0",
+        "rollup-plugin-livereload": "^2.0.5",
+        "rollup-plugin-postcss": "^4.0.2"
+    },
+    "browserslist": [
+        "defaults"
+    ],
+    "config": {
+        "card_assets": true,
+        "posts_per_page": 12,
+        "image_sizes": {
+            "xxs": {
+                "width": 50
+            },
+            "xs": {
+                "width": 100
+            },
+            "s": {
+                "width": 300
+            },
+            "m": {
+                "width": 500
+            },
+            "l": {
+                "width": 700
+            },
+            "xl": {
+                "width": 1000
+            },
+            "xxl": {
+                "width": 2000
+            }
+        },
+        "custom": {
+            "logo_for_dark_mode": {
+                "type": "image",
+                "description": "Logo for dark mode and footer. Use same dimensions as that of your default logo."
+            },
+            "accent_color_for_dark_mode": {
+                "type": "color",
+                "default": "#f2c718"
+            },
+            "secondary_navigation_in_header": {
+                "type": "select",
+                "options": [
+                    "Top Tags",
+                    "Secondary Navigation",
+                    "Hidden"
+                ],
+                "default": "Top Tags",
+                "description": "Show top tags or secondary nav in header. You can also hide it completely."
+            },
+            "show_carousel": {
+                "type": "boolean",
+                "group": "homepage",
+                "default": true,
+                "description": "Show the carousel on the homepage."
+            },
+            "carousel_slider_posts": {
+                "type": "select",
+                "group": "homepage",
+                "options": [
+                    "Featured Posts",
+                    "Latest Posts"
+                ],
+                "default": "Featured Posts",
+                "visibility": "show_carousel:true",
+                "description": "Which posts to show on the carousel slider. Shows maximum 3 posts."
+            },
+            "show_3_column_hero": {
+                "type": "boolean",
+                "group": "homepage",
+                "default": true,
+                "description": "Show the 3 column hero on the homepage."
+            },
+            "hero_center_column_posts": {
+                "type": "select",
+                "group": "homepage",
+                "options": [
+                    "Featured Posts",
+                    "Latest Posts"
+                ],
+                "default": "Featured Posts",
+                "visibility": "show_3_column_hero:true",
+                "description": "Which posts to show on the center column of 3-column hero section. Shows maximum 1 post."
+            },
+            "hero_left_column_posts": {
+                "type": "select",
+                "group": "homepage",
+                "options": [
+                    "Featured Posts",
+                    "Latest Posts"
+                ],
+                "default": "Featured Posts",
+                "visibility": "show_3_column_hero:true",
+                "description": "Which posts to show on the left column of 3-column hero section. Shows maximum 3 posts."
+            },
+            "hero_right_column_posts": {
+                "type": "select",
+                "group": "homepage",
+                "options": [
+                    "Featured Posts",
+                    "Latest Posts",
+                    "Tag"
+                ],
+                "default": "Latest Posts",
+                "visibility": "show_3_column_hero:true",
+                "description": "Which posts to show on the right column of 3-column hero section. Shows maximum 6 posts."
+            },
+            "hero_right_column_posts_tag_slug": {
+                "type": "text",
+                "group": "homepage",
+                "visibility": "hero_right_column_posts:Tag",
+                "description": "Tag slug to show on the right column of 3-column hero section."
+            },
+            "default_post_template": {
+                "type": "select",
+                "group": "post",
+                "options": [
+                    "With Normal TOC and Sidebar",
+                    "With Sticky TOC and No Sidebar",
+                    "With Normal TOC and No Sidebar",
+                    "With Sticky Sidebar and No TOC",
+                    "With No TOC and No Sidebar"
+                ],
+                "default": "With Normal TOC and Sidebar",
+                "description": "Default post format. You can override for individual posts by selecting template in posts setting."
+            },
+            "use_portal_links": {
+                "type": "boolean",
+                "default": false,
+                "description": "Use portal links instead of custom pages - signin, signup, subscribe, account, membership."
+            },
+            "tag_slugs_to_show_on_home": {
+                "type": "text",
+                "group": "homepage",
+                "description": "Comma separated tag slugs to show article sections on homepage."
+            },
+            "home_tag_section_layout": {
+                "type": "select",
+                "group": "homepage",
+                "options": [
+                    "One row with 4 post cards in 1|1|1|1 format",
+                    "Two columns with 4 post cards in 1|3 format",
+                    "Two rows with 4 post cards in 2|2 format"
+                ],
+                "default": "Two columns with 4 post cards in 1|3 format",
+                "description": "Layout of tag sections on homepage."
+            },
+            "primary_font": {
+                "type": "select",
+                "options": [
+                    "Alegreya",
+                    "Newsreader",
+                    "Oswald",
+                    "Playfair Display",
+                    "Source Serif 4",
+                    "Roboto Serif",
+                    "PT Serif",
+                    "Merriweather"
+                ],
+                "default": "Source Serif 4",
+                "description": "Font for headings and titles. To change the font, add the class 'font-primary'."
+            },
+            "secondary_font": {
+                "type": "select",
+                "options": [
+                    "Alegreya Sans",
+                    "Newsreader",
+                    "Oswald",
+                    "Roboto",
+                    "Roboto Flex",
+                    "Open Sans",
+                    "Lato",
+                    "Inter",
+                    "Source Sans 3",
+                    "PT Sans"
+                ],
+                "default": "Source Sans 3",
+                "description": "Font for rest of the body and paragraphs. To change the font, add class 'font-secondary'."
+            },
+            "enable_multilingual_features": {
+                "type": "boolean",
+                "default": false,
+                "description": "Turn on if you want to enable all multilingual features of this theme."
+            },
+            "locales": {
+                "type": "text",
+                "visibility": "enable_multilingual_features:true",
+                "default": "en-GB,ar-SA,zh-CN,de-DE,es-ES,fr-FR,hi-IN,as-IN,it-IT,id-ID,ja-JP,ko-KR,nl-NL,no-NO,pl-PL,pt-BR,sv-SE,fi-FI,th-TH,tr-TR,uk-UA,vi-VN,ru-RU,he-IL",
+                "description": "Comma separated values of Language (ISO 639-1 bit.ly/tuslang) and Country (bit.ly/tusflag)."
+            },
+            "main_locale": {
+                "type": "text",
+                "visibility": "enable_multilingual_features:true",
+                "default": "en",
+                "description": "Language code for site's main language."
+            },
+            "main_locale_url": {
+                "type": "text",
+                "visibility": "enable_multilingual_features:true",
+                "description": "Root URL without any slash at the end. E.g https://www.example.com or https://example.com"
+            }
+        }
+    },
+    "type": "module"
+}

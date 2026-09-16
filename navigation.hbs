@@ -1,0 +1,17 @@
+{{!-- If Primary Navigation --}}
+{{^if isSecondary}}
+    {{#contentFor 'scripts'}}
+        {{> scripts navigation=true}}
+    {{/contentFor}}
+
+    {{#foreach navigation}}
+        <li id="menu-id-{{slug}}-{{@index}}" data-link="{{url absolute='true'}}" data-label="{{label}}" class="opacity-0 nav-{{slug}}{{#if current}} active {{/if}} hover:text-[--text-secondary]"></li>
+    {{/foreach}}
+    {{!-- If Secondary Navigation --}}
+{{else}}
+    {{#foreach navigation}}
+        <li class="secondary-menu-id-{{slug}}-{{@index}} {{#if current}} active {{/if}}">
+            <a aria-label="{{label}}" href="{{url absolute='true'}}" title="{{label}}" class="opacity-0">{{label}}</a>
+        </li>
+    {{/foreach}}
+{{/if}}

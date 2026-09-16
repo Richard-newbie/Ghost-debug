@@ -1,0 +1,28 @@
+<footer class="bg-[--footer-bg] border-t border-[--footer-border]">
+    <div class="border-b border-[--footer-border]">
+        <div class="wrapper py-10 md:py-12" style="display:flex; flex-direction:column; gap:1.5rem; align-items:flex-start;">
+            <div style="flex-shrink:0;">
+                {{!-- Markup to show only dark mode for footer --}}
+                {{> logo is_footer=true}}
+                <p class="footer-site-description text-[--footer-text] text-sm font-medium mt-2" style="max-width:20rem;"> {{@site.description}} </p>
+            </div>
+            {{!-- Compact horizontal footer navigation --}}
+            <nav aria-label="Footer navigation" class="footer-links-row text-[--footer-text] text-xs sm:text-sm font-medium uppercase" style="display:flex; flex-wrap:wrap; align-items:center; gap:0.75rem 1.5rem; width:100%;">
+                {{navigation type="secondary"}}
+                {{#if @site.members_enabled}}
+                    {{#if @member}}
+                        <a aria-label="Account" href="/account/" {{#if @custom.use_portal_links}} data-portal="account"{{/if}} class="hover:text-[--footer-text-hover]" style="color:inherit; text-decoration:none;">{{t "Account"}}</a>
+                    {{else}}
+                        <a aria-label="Sign In" href="javascript:" data-portal="signin" class="hover:text-[--footer-text-hover]" style="color:inherit; text-decoration:none;">{{t "Sign In"}}</a>
+                    {{/if}}
+                {{/if}}
+            </nav>
+        </div>
+    </div>
+    {{!-- Thin copyright row --}}
+    <div class="wrapper footer-bottom" style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:0.5rem;" >
+        <div class="text-[--footer-text] footer-copyright-text text-xs font-medium"> &copy;{{date format="YYYY"}} <a aria-label="{{@site.title}}" href="{{@site.url}}">{{@site.title}}</a>. {{t "All rights reserved."}} </div>
+        {{!-- Site Social Media Links --}}
+        {{> site-social-links }}
+    </div>
+</footer>

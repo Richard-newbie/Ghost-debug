@@ -1,0 +1,82 @@
+<div data-tier="{{slug}}" data-currency="{{price currency=currency}}" class="xs:col-span-2 border border-[--gray] flex flex-col justify-between gap-6 p-6 rounded-sm relative">
+    {{#if trial_days}}
+    <div class="z-[10] w-24 aspect-square absolute -top-2 -right-2 overflow-hidden rounded-sm">
+        <div class="absolute top-0 left-0 bg-[--membership-ribbon] h-2 w-2"></div>
+        <div class="absolute bottom-0 right-0 bg-[--membership-ribbon] h-2 w-2"></div>
+        <span class="w-[140%] py-1.5 bg-[--membership-ribbon] text-white font-semibold tracking-wider text-xs block text-center absolute bottom-0 right-0 rotate-45 origin-bottom-right shadow">
+            {{trial_days}} {{t "days free"}}
+        </span>
+    </div>
+    {{/if}}
+
+    <div class="flex flex-col gap-3">
+        <h2 class="font-heading text-[--text-primary] font-medium text-xl xs:text-2xl text-center">{{name}}</h2>
+        <p class="text-[--text-secondary] font-mediu text-base text-center">{{description}}</p>
+    </div>
+
+    <h3 class="mt-auto font-medium text-3xl text-[--subscribe-btn-bg] mx-auto text-center">
+        {{#match type "free"}}
+            <span>{{t "Free"}}</span>
+        {{/match}}
+        {{#if monthly_price}}
+            <span class="monthly">{{price monthly_price currency=currency}}/</span><span class="monthly text-base">{{t "month"}}</span>
+        {{/if}}
+        {{#if yearly_price}}
+            <span class="yearly">{{price yearly_price currency=currency}}/</span><span class="yearly text-base">{{t "year"}}</span>
+            <span class="yearly js-discount-wrapper text-xs bg-[--membership-ribbon] rounded-full text-[--subscribe-btn-text] px-3 py-1"><span {{#if monthly_price}}data-monthly-price="{{price monthly_price}}"{{/if}} data-yearly-price="{{price yearly_price}}" class="js-discount-number">0%</span>{{t "Off"}}</span>
+        {{/if}}
+    </h3>
+
+    <div class="w-full border-b border-[--gray]"></div>
+
+    <ul class="space-y-1">
+        {{#foreach benefits as |benefit|}}
+        <li class="flex gap-2">
+            <svg viewBox="0 0 24 24" fill="none" class="size-4 mt-0.5"><path d="M4 12.6111L8.92308 17.5L20 6.5" class="stroke-[--text-secondary]" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="text-[--text-secondary] text-sm font-medium">
+                {{benefit}}
+            </div>
+        </li>
+        {{/foreach}}
+    </ul>
+
+    {{#if @site.members_invite_only}}
+        {{#if monthly_price}}
+            <div class="monthly">
+                <p class="text-[--text-primary] font-medium text-base text-center">{{t "Subscription for {title} is by invite only." title=@site.title}}</p>
+                <div class="text-[--text-secondary] text-sm text-center">
+                    {{t "Already have an account? "}}
+                    <a aria-label="{{@site.title}} {{t "Sign in"}}" href="{{@site.url}}/signin/" {{#if @custom.use_portal_links}}data-portal="signin"{{/if}} title="{{@site.title}} {{t "Sign in"}}" class="underline">{{t "Sign in"}}</a>
+                </div>
+            </div>
+        {{/if}}
+        {{#if yearly_price}}
+            <div class="yearly">
+                <p class="text-[--text-primary] font-medium text-base text-center">{{t "Subscription for {title} is by invite only." title=@site.title}}</p>
+                <div class="text-[--text-secondary] text-sm text-center">
+                    {{t "Already have an account? "}}
+                    <a aria-label="{{@site.title}} {{t "Sign in"}}" href="{{@site.url}}/signin/" {{#if @custom.use_portal_links}}data-portal="signin"{{/if}} title="{{@site.title}} {{t "Sign in"}}" class="underline">{{t "Sign in"}}</a>
+                </div>
+            </div>
+        {{/if}}
+        {{#match type "free"}}
+            <div>
+                <p class="text-[--text-primary] font-medium text-base text-center">{{t "Subscription for {title} is by invite only." title=@site.title}}</p>
+                <div class="text-[--text-secondary] text-sm text-center">
+                    {{t "Already have an account? "}}
+                    <a aria-label="{{@site.title}} {{t "Sign in"}}" href="{{@site.url}}/signin/" {{#if @custom.use_portal_links}}data-portal="signin"{{/if}} title="{{@site.title}} {{t "Sign in"}}" class="underline">{{t "Sign in"}}</a>
+                </div>
+            </div>
+        {{/match}}
+    {{else if @site.members_enabled}}
+        {{#if monthly_price}}
+            <a href="javascript:" data-plan="monthly" data-portal="signup/{{id}}/monthly" class="monthly w-full inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none"><div class="h-[26px] flex items-center justify-center">{{t "Subscribe Now"}}</div></a>
+        {{/if}}
+        {{#if yearly_price}}
+            <a href="javascript:" data-plan="annual" data-portal="signup/{{id}}/yearly" class="yearly w-full inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none"><div class="h-[26px] flex items-center justify-center">{{t "Subscribe Now"}}</div></a>
+        {{/if}}
+        {{#match type "free"}}
+            <a href="/signup/" {{#if @custom.use_portal_links}} data-portal="signup/free"{{/if}} class="w-full inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none"><div class="h-[26px] flex items-center justify-center">{{t "Subscribe Now"}}</div></a>
+        {{/match}}
+    {{/if}}
+</div>

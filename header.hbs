@@ -1,0 +1,111 @@
+<header class="fixed z-1000 top-0 left-0 w-full bg-[--header-bg]">
+    <div class="border-b border-[--border-color]">
+        <nav class="wrapper flex items-center justify-between">
+            {{!-- Site logo --}}
+            {{> logo}}
+            <div class="flex py-5 items-center gap-3 sm:gap-5 lg:gap-10">
+                <div class="order-3 lg:order-1 flex items-center gap-10">
+                    {{!-- Mobile navigation buttons --}}
+                    <button aria-label="mobile-nav" id="mobile-nav" data-open="false" class="size-8 rounded-full flex lg:hidden items-center justify-center hover:bg-[--nav-btn-hover] group peer">
+                        <img src="{{asset "img/mobile-nav.svg"}}" alt="mobile-nav-icon" class="h-4/5 w-auto filter-theme block group-data-[open='true']:hidden" aria-hidden="true" />
+                        <img src="{{asset "img/close.svg"}}" alt="close-icon" class="h-4/5 w-auto filter-theme block group-data-[open='false']:hidden" aria-hidden="true" />
+                    </button>
+                    <div id="nav-items" class="absolute top-[calc(4.5rem+1px)] left-0 w-full lg:w-auto lg:static grid peer-data-[open='false']:grid-rows-[0fr] [transition:grid-template-rows_ease-in-out_300ms] peer-data-[open='true']:grid-rows-[1fr] lg:peer-data-[open='true']:grid-rows-[1fr] lg:peer-data-[open='false']:grid-rows-[1fr]">
+                        <div class="overflow-hidden lg:overflow-visible z-10">
+                            <ul id="primary-navigation" class="text-sm font-medium capitalize flex flex-col lg:flex-row lg:items-center gap-5 lg:gap-8 bg-[--header-bg] lg:bg-transparent p-5 lg:p-0 border-b border-[--border-color] lg:border-0">
+                                {{navigation}}
+                                {{#if @site.members_enabled}}
+                                    <li class="static-menu block sm:hidden">
+                                        {{!-- Show button based on visitor's logged in status --}}
+                                        {{#if @member}}
+                                            <a aria-label="Account"  href="/account/" {{#if @custom.use_portal_links}} data-portal="account"{{/if}} class="inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-3 py-2.5 duration-300 text-xs font-medium uppercase text-[--subscribe-btn-text] leading-none">{{t "Account"}}</a>
+                                        {{else}}
+                                           <a aria-label="JOIN" href="/subscribe/" {{#if @custom.use_portal_links}} data-portal="JOIN"{{/if}} class="inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-3 py-2.5 duration-300 text-xs font-medium uppercase text-[--subscribe-btn-text] leading-none">{{t "JOIN"}}</a>
+                                        {{/if}}
+                                    </li>
+                                {{/if}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2 flex items-center gap-3 sm:gap-5 lg:gap-10">
+                    {{!-- Search button --}}
+                    <button data-ghost-search aria-label="search" class="search-btn size-8 rounded-full flex items-center justify-center hover:bg-[--nav-btn-hover]">
+                        <img src="{{asset "img/search.svg"}}" alt="search-icon" class="h-4/5 w-auto filter-theme" aria-hidden="true" />
+                    </button>
+                    {{!-- Dark/Light mode button --}}
+                    <button id="theme-toggler" aria-label="theme-toggle" class="size-8 rounded-full flex items-center justify-center hover:bg-[--nav-btn-hover]">
+                        <img src="{{asset "img/moon.svg"}}" alt="dark-mode-icon" class="moon h-4/5 w-auto filter-theme" aria-hidden="true" />
+                        <img src="{{asset "img/sun.svg"}}" alt="light-mode-icon" class="sun h-4/5 w-auto filter-theme" aria-hidden="true" />
+                    </button>
+                </div>
+                <div class="order-2 lg:order-3 flex items-center gap-5 lg:gap-10">
+                    {{#if @custom.enable_multilingual_features}}
+                        <div data-open="false" id="lang-switcher" tabindex="0">
+                            <div class="absolute top-0 left-0 h-full w-full -z-50 cursor-pointer"></div>
+                            <button id="lang-switcher-btn" aria-label="change-language" class="group"></button>
+                            <ul class="lang-switcher-content scrollable" id="lang-switcher-content"></ul>
+                        </div>
+                    {{/if}}
+                    {{!-- Show button based on visitor's logged in status --}}
+                    {{#if @site.members_enabled}}
+                        {{#if @member}}
+                            <a aria-label="Account"  href="/account/" {{#if @custom.use_portal_links}} data-portal="ACCOUNT"{{/if}} class="header-btn hidden sm:inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-3 py-2.5 duration-300 text-xs font-medium uppercase text-[--subscribe-btn-text: #080808 !important] leading-none">{{t "Account"}}</a>
+                        {{else}}
+                            <a aria-label="JOIN" href="javascript:" data-portal="signup" class="header-btn hidden sm:inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-3 py-2.5 duration-300 text-xs font-medium uppercase text-[--subscribe-btn-text: #080808 !important] leading-none">{{t "JOIN"}}</a>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        </nav>
+    </div>
+    {{#match @custom.secondary_navigation_in_header "Secondary Navigation"}}
+        {{> header-secondary-nav}}
+    {{/match}}
+    {{#match @custom.secondary_navigation_in_header "Top Tags"}}
+        {{> header-categories}}
+    {{/match}}
+  
+ <div class="populizt-media-strip">
+  <div class="wrapper flex items-center justify-between">
+    <div class="populizt-media-strip-label">
+      <span>CULTURE · ECONOMICS · IMPACT · PHILOSOPHY</span> 
+    </div>
+  <div class="populizt-media-strip-icons">
+  <a href="https://open.spotify.com" aria-label="Spotify">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M8 15c3 -1 5 -1 8 .5" /><path d="M8 11.5c3.5 -1 6 -1 9 .5" /><path d="M8 8c4 -1 7 -1 10 1" /></svg>
+  </a>
+  <a href="https://podcasts.apple.com" aria-label="Apple Podcasts">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><circle cx="12" cy="10" r="2.5" /><path d="M9 17c0 -2 1.5 -3.5 3 -3.5s3 1.5 3 3.5" /></svg>
+  </a>
+  <a href="https://www.youtube.com" aria-label="YouTube">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4z" /><path d="M10 9l5 3l-5 3z" /></svg>
+  </a>
+  <a href="https://www.reddit.com" aria-label="Reddit">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 8c2.648 0 5.028 .826 6.675 2.14a2.5 2.5 0 0 1 2.326 4.36c0 3.59 -4.03 6.5 -9 6.5c-4.875 0 -8.845 -2.8 -9 -6.294l-1 -.206a2.5 2.5 0 0 1 2.326 -4.36c1.646 -1.313 4.026 -2.14 6.674 -2.14z" /><path d="M12 8l1 -5l6 1" /><path d="M19 4m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><circle cx="9" cy="13" r=".5" fill="currentColor" /><circle cx="15" cy="13" r=".5" fill="currentColor" /><path d="M10 17c.667 .333 1.333 .5 2 .5s1.333 -.167 2 -.5" /></svg>
+  </a>
+  <a href="https://www.instagram.com" aria-label="Instagram">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M16.5 7.5v.01" /></svg>
+  </a>
+  <a href="https://x.com" aria-label="X">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+  </a>
+  <a href="https://www.tiktok.com" aria-label="TikTok">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" /></svg>
+  </a>
+  <a href="https://www.facebook.com" aria-label="Facebook">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
+  </a>
+  <a href="https://www.threads.net" aria-label="Threads">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 7.5c-1.333 -3 -3.667 -4.5 -7 -4.5c-5 0 -8 2.5 -8 9s3.5 9 8 9s7 -3 7 -5s-1 -5 -7 -5c-2.5 0 -3 1.25 -3 2.5c0 1.5 1 2.5 2.5 2.5c2.5 0 3.5 -1.5 3.5 -5s-2 -4 -3 -4s-1.833 .333 -2.5 1" /></svg>
+  </a>
+  <a href="https://bsky.app" aria-label="Bluesky">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.335 5.144c-1.654 -1.199 -4.335 -2.127 -4.335 .826c0 .59 .35 4.953 .556 5.661c.713 2.463 3.13 2.75 5.444 2.369c-4.045 .665 -4.889 3.208 -2.667 5.41c1.03 1.018 1.913 1.59 2.667 1.59c2 0 3.134 -2.769 3.5 -3.5c.333 -.667 .5 -1.167 .5 -1.5c0 .333 .167 .833 .5 1.5c.366 .731 1.5 3.5 3.5 3.5c.754 0 1.637 -.571 2.667 -1.59c2.222 -2.203 1.378 -4.746 -2.667 -5.41c2.314 .38 4.73 .094 5.444 -2.369c.206 -.708 .556 -5.072 .556 -5.661c0 -2.953 -2.68 -2.025 -4.335 -.826c-2.293 1.662 -4.76 5.048 -5.665 6.856c-.905 -1.808 -3.372 -5.194 -5.665 -6.856z" /></svg>
+  </a>
+  <a href="https://www.linkedin.com" aria-label="LinkedIn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 11v5" /><path d="M8 8v.01" /><path d="M12 16v-5" /><path d="M16 16v-3a2 2 0 1 0 -4 0" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" /></svg>
+  </a>
+</div>
+</div>
+</div>
+ </header>

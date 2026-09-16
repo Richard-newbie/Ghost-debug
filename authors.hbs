@@ -1,0 +1,501 @@
+{{!< default}}
+{{#contentFor 'title'}}{{t "Authors"}}{{/contentFor}}
+
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/authors/" hreflang="{{@custom.main_locale}}" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/authors/" hreflang="x-default" />
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/authors/" hreflang="hi" />
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/authors/" hreflang="es" />
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+
+<section class="section-authors py-10 xs:py-12 md:py-16">
+    <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+        <h1 class="section-authors-title font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium leading-none text-center">
+            {{t "Authors"}}
+        </h1>
+
+        {{!-- GRID: first page (SSR) + subsequent pages (JS) --}}
+        <div id="authors-grid" class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-10 xs:gap-5 md:gap-10">
+            {{!-- Server-render the first page so the page has content without JS. The limit should match the limit var in the JS. --}}
+            {{#get "authors" include="count.posts" limit=@config.posts_per_page order="count.posts desc"}}
+                {{#if authors}}
+                    {{#foreach authors}}
+                        <div class="section-authors-card border border-[--border-color] hover:border-[--text-primary] flex flex-col rounded-sm group">
+                            {{#if profile_image}}
+                                <a href="{{url}}" aria-label="{{name}}" class="section-authors-img w-full aspect-[1.3] overflow-hidden">
+                                    {{> images/profile-image-l classes="h-full w-full object-center object-cover group-hover:scale-[1.025] transition-transform"}}
+                                </a>
+                            {{/if}}
+                            <div class="flex flex-1 flex-col justify-between gap-4 p-5 xs:p-6">
+                                <a href="{{url}}" aria-label="{{name}}" class="flex flex-col gap-1.5">
+                                    <h2 class="section-authors-name font-heading font-medium text-[--text-primary] text-lg xs:text-xl lg:text-2xl hover:text-[--text-secondary]">
+                                        {{name}}
+                                    </h2>
+                                    {{#if bio}}
+                                        <p class="section-authors-bio text-[--text-secondary] font-medium text-sm">{{bio}}</p>
+                                    {{/if}}
+                                </a>
+                                <div class="flex flex-col justify-between gap-4">
+                                    {{> author-social-links accounts=this size="size-5" slug=slug name=name website=website}}
+                                    <a href="{{url}}" aria-label="More articles by {{name}}" class="flex items-center gap-2">
+                                    <span class="text-[--text-primary] text-sm font-medium">
+                                        {{plural count.posts empty=(t 'No posts') singular=(t '1 post') plural=(t '% posts')}}
+                                    </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-5 transition-transform group-hover:translate-x-1 icon icon-tabler icon-tabler-arrow-right">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M5 12l14 0" />
+    <path d="M13 18l6 -6" />
+    <path d="M13 6l6 6" />
+</svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {{/foreach}}
+                {{/if}}
+            {{/get}}
+        </div>
+
+        {{!-- LOAD MORE BUTTON (disabled when done) --}}
+        <div class="flex justify-center">
+            <button
+                id="load-authors"
+                class="rounded-sm border border-[--border-color] px-5 py-2 text-sm font-medium text-[--text-primary] hover:border-[--text-primary]"
+                data-start-page="2"  {{!-- because page 1 is SSR'ed above --}}
+                aria-label="{{t 'Load More Authors'}}">
+                {{t "Load More Authors"}}
+            </button>
+        </div>
+
+        <noscript>
+            <p class="text-center text-sm text-[--text-secondary] mt-2">
+                {{t "Enable JavaScript to load more authors."}}
+            </p>
+        </noscript>
+    </div>
+</section>
+
+<div id="social-icon-templates" hidden>
+    <template id="tpl-icon-twitter">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" /></svg>
+    </template>
+
+    <template id="tpl-icon-facebook">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-facebook"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
+    </template>
+
+    <template id="tpl-icon-linkedin">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-linkedin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 11v5" /><path d="M8 8v.01" /><path d="M12 16v-5" /><path d="M16 16v-3a2 2 0 1 0 -4 0" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" /></svg>
+    </template>
+
+    <template id="tpl-icon-bluesky">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-bluesky"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.335 5.144c-1.654 -1.199 -4.335 -2.127 -4.335 .826c0 .59 .35 4.953 .556 5.661c.713 2.463 3.13 2.75 5.444 2.369c-4.045 .665 -4.889 3.208 -2.667 5.41c1.03 1.018 1.913 1.59 2.667 1.59c2 0 3.134 -2.769 3.5 -3.5c.333 -.667 .5 -1.167 .5 -1.5c0 .333 .167 .833 .5 1.5c.366 .731 1.5 3.5 3.5 3.5c.754 0 1.637 -.571 2.667 -1.59c2.222 -2.203 1.378 -4.746 -2.667 -5.41c2.314 .38 4.73 .094 5.444 -2.369c.206 -.708 .556 -5.072 .556 -5.661c0 -2.953 -2.68 -2.025 -4.335 -.826c-2.293 1.662 -4.76 5.048 -5.665 6.856c-.905 -1.808 -3.372 -5.194 -5.665 -6.856z" /></svg>
+    </template>
+
+    <template id="tpl-icon-threads">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-threads"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 7.5c-1.333 -3 -3.667 -4.5 -7 -4.5c-5 0 -8 2.5 -8 9s3.5 9 8 9s7 -3 7 -5s-1 -5 -7 -5c-2.5 0 -3 1.25 -3 2.5c0 1.5 1 2.5 2.5 2.5c2.5 0 3.5 -1.5 3.5 -5s-2 -4 -3 -4s-1.833 .333 -2.5 1" /></svg>
+    </template>
+
+    <template id="tpl-icon-mastodon">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-mastodon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18.648 15.254c-1.816 1.763 -6.648 1.626 -6.648 1.626a18.262 18.262 0 0 1 -3.288 -.256c1.127 1.985 4.12 2.81 8.982 2.475c-1.945 2.013 -13.598 5.257 -13.668 -7.636l-.026 -1.154c0 -3.036 .023 -4.115 1.352 -5.633c1.671 -1.91 6.648 -1.666 6.648 -1.666s4.977 -.243 6.648 1.667c1.329 1.518 1.352 2.597 1.352 5.633s-.456 4.074 -1.352 4.944z" /><path d="M12 11.204v-2.926c0 -1.258 -.895 -2.278 -2 -2.278s-2 1.02 -2 2.278v4.722m4 -4.722c0 -1.258 .895 -2.278 2 -2.278s2 1.02 2 2.278v4.722" /></svg>
+    </template>
+
+    <template id="tpl-icon-tiktok">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-tiktok"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 7.917v4.034a9.948 9.948 0 0 1 -5 -1.951v4.5a6.5 6.5 0 1 1 -8 -6.326v4.326a2.5 2.5 0 1 0 4 2v-11.5h4.083a6.005 6.005 0 0 0 4.917 4.917z" /></svg>
+    </template>
+
+    <template id="tpl-icon-youtube">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-youtube"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" /><path d="M10 9l5 3l-5 3z" /></svg>
+    </template>
+
+    <template id="tpl-icon-instagram">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-brand-instagram"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M16.5 7.5v.01" /></svg>
+    </template>
+
+    <template id="tpl-icon-website">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round"  class="filter-theme size-5 icon icon-tabler icons-tabler-outline icon-tabler-link"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /></svg>
+    </template>
+</div>
+
+{{!-- Official Ghost Content API client (UMD) --}}
+<script src="https://unpkg.com/@tryghost/content-api@1.12.0/umd/content-api.min.js" defer></script>
+
+<script>
+    (function () {
+        function onReady(fn){document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn);}
+
+        onReady(function(){
+            var $btn  = document.getElementById('load-authors');
+            var $grid = document.getElementById('authors-grid');
+            if (!$btn || !$grid) return;
+
+            // Get API config: prefer data-attrs; fall back to globals or origin
+            var apiUrl = ($btn.dataset.apiUrl || window.GHOST_API_URL || window.location.origin).replace(/\/$/, '');
+            var apiKey = $btn.dataset.apiKey || window.GHOST_CONTENT_API_KEY;
+
+            if (typeof GhostContentAPI === 'undefined') {
+                console.warn('GhostContentAPI library not loaded.');
+                return;
+            }
+            if (!apiKey) {
+                console.warn('Ghost Content API key not found. Define window.GHOST_CONTENT_API_KEY in code injection.');
+                return;
+            }
+
+            var api = new GhostContentAPI({ url: apiUrl, key: apiKey, version: 'v6.0' });
+
+            var page    = parseInt($btn.dataset.startPage || '2', 10); // next page after SSR
+            var limit   = GLOBAL.POSTS_PER_PAGE; // Ghost’s max page size is 100. Change this number to change number of authors to load at a time.
+            var hasMore = true;
+            var loading = false;
+
+            function setAllLoadedState(){
+                $btn.disabled = true;
+                $btn.setAttribute('aria-disabled', 'true');
+                $btn.classList.add('opacity-60','cursor-not-allowed');
+                $btn.textContent = '{{t "All Authors Loaded"}}';
+                $btn.title = '{{t "All Authors Loaded"}}';
+            }
+            function restoreButtonLabel(label){
+                $btn.disabled = false;
+                $btn.removeAttribute('aria-disabled');
+                $btn.classList.remove('opacity-60','cursor-not-allowed');
+                $btn.textContent = label;
+                $btn.removeAttribute('title');
+            }
+
+            function postCountText(n){
+                if (typeof n !== 'number') return '';
+                if (n === 0) return '{{t "No posts"}}';
+                if (n === 1) return "{{t '1 post'}}";
+                return n + "{{t ' posts'}}";
+            }
+
+            // Map your theme sizes to exact widths (match your package.json)
+            const GHOST_WIDTHS = { xxs: 50, xs: 100, s: 300, m: 500, l: 700 };
+
+            // Locale prefix detector: "/es/*" -> "/es", otherwise ""
+            const LOCALE_SEGMENT_RE = /^[a-z]{2}(?:-[a-z]{2})?$/i;
+            const localePrefix = (function getLocalePrefix() {
+                const first = window.location.pathname.split('/').filter(Boolean)[0] || '';
+                return LOCALE_SEGMENT_RE.test(first) ? `/${first}` : '';
+            })();
+
+            // Is this a Ghost-managed image under /content/images ?
+            function isGhostManaged(src) {
+                try {
+                    const u = new URL(src, window.location.origin);
+                    return /\/content\/images\//i.test(u.pathname);
+                } catch { return false; }
+            }
+
+            // Escape basic HTML (for alt text, etc.)
+            function esc(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+            /**
+             * Build a Ghost transform URL with locale-aware base path:
+             */
+            function ghostTransformedUrl(src, { width, format } = {}) {
+                if (!src) return "";
+                try {
+                    const u = new URL(src, window.location.origin);
+                    if (!isGhostManaged(u.toString())) return "";
+
+                    // Strip any leading "<locale>/content/images/" or "content/images/" from the original path
+                    const CONTENT_PREFIX_RE = /^(?:\/[a-z]{2}(?:-[a-z]{2})?)?\/content\/images\//i;
+                    const tail = u.pathname.replace(CONTENT_PREFIX_RE, "");
+
+                    const fmt = format ? `format/${format}/` : "";
+                    // Insert localePrefix if present, then compose final path
+                    u.pathname = `${localePrefix}/content/images/size/w${width}/${fmt}${tail}`.replace(/\/{2,}/g, '/');
+                    return u.toString();
+                } catch {
+                    return "";
+                }
+            }
+
+            // Build a srcset string from widths (e.g. [50,100,...]) and optional format
+            function buildSrcset(src, widths, format) {
+                const parts = [];
+                for (const w of widths) {
+                    const url = ghostTransformedUrl(src, { width: w, format });
+                    if (!url) return ""; // if any transform fails, bail to non-picture fallback
+                    parts.push(`${url} ${w}w`);
+                }
+                return parts.join(", ");
+            }
+
+            function authorPictureHTML(a, classes = "h-full w-full object-center object-cover group-hover:scale-[1.025] transition-transform") {
+                const img = a && a.profile_image;
+                if (!img) return "";
+
+                const widths = [GHOST_WIDTHS.xxs, GHOST_WIDTHS.xs, GHOST_WIDTHS.s, GHOST_WIDTHS.m, GHOST_WIDTHS.l];
+                const sizesAttr = '((max-width: 50px)) 50px, ((min-width: 50px) and (max-width: 100px)) 100px, ((min-width: 100px) and (max-width: 300px)) 300px, ((min-width: 300px) and (max-width: 500px)) 500px, (min-width: 500px) 700px';
+
+                const avifSet = buildSrcset(img, widths, "avif");
+                const webpSet = buildSrcset(img, widths, "webp");
+                const jpgSet  = buildSrcset(img, widths, undefined);
+                const srcL    = ghostTransformedUrl(img, { width: GHOST_WIDTHS.l }) || img; // fallback to original
+
+                // If transforms worked, output <picture> with AVIF/WebP sources + fallback <img>
+                if (avifSet && webpSet && jpgSet) {
+                    return (
+                        '<a href="'+a.url+'" aria-label="'+esc(a.name)+'" class="section-authors-img w-full aspect-[1.3] overflow-hidden">'
+                        + '<picture>'
+                        // Tip from your HBS: remove AVIF source if you expect animated images
+                        + '<source srcset="'+avifSet+'" sizes="'+sizesAttr+'" type="image/avif">'
+                        + '<source srcset="'+webpSet+'" sizes="'+sizesAttr+'" type="image/webp">'
+                        + '<img loading="lazy" decoding="async"'
+                        + ' srcset="'+jpgSet+'" src="'+srcL+'" sizes="'+sizesAttr+'"'
+                        + ' class="'+esc(classes)+'" alt="'+esc(a.name)+'">'
+                        + '</picture>'
+                        + '</a>'
+                    );
+                }
+
+                // Fallback: no transforms (external image/CDN) → just use original <img>
+                return (
+                    '<a href="'+a.url+'" aria-label="'+esc(a.name)+'" class="section-authors-img w-full aspect-[1.3] overflow-hidden">'
+                    + '<img src="'+img+'" alt="'+esc(a.name)+'" loading="lazy" class="'+esc(classes)+'">'
+                    + '</a>'
+                );
+            }
+
+            function normalizeMastodonUrl(value, defaultInstance = "") {
+                if (!value) return "";
+                const v = String(value).trim();
+
+                // Already a full URL
+                if (/^https?:\/\//i.test(v)) return v;
+
+                // Domain/path without scheme, e.g. mastodon.social/@max
+                if (/^[a-z0-9.-]+\.[a-z]{2,}\/@[^/\s]+$/i.test(v)) {
+                    return `https://${v}`;
+                }
+
+                // @user@server or user@server
+                const parts = v.replace(/^@/, "").split("@");
+                if (parts.length === 2 && parts[0] && parts[1]) {
+                    const user = parts[0];
+                    const host = parts[1];
+                    return `https://${host}/@${user}`;
+                }
+
+                // Only @user (no server) — fall back to default instance if provided
+                if (defaultInstance) {
+                    const host = String(defaultInstance).replace(/^https?:\/\//i, "").replace(/\/+$/,"");
+                    const user = v.replace(/^@/, "");
+                    return `https://${host}/@${user}`;
+                }
+
+                // Can't construct a valid URL
+                return "";
+            }
+
+            function socialLinksHTML(a, opts = {}) {
+                const parts = [];
+                const val = (x) => (typeof x === 'string' ? x.trim() : '');
+                const isUrl = (s) => /^https?:\/\//i.test(s);
+
+                const iconSvg = (name) => {
+                    const tpl = document.getElementById(`tpl-icon-${name}`) || document.getElementById('tpl-icon-globe');
+                    return tpl ? tpl.innerHTML : '';
+                };
+
+                const anchor = (name, label, href, extraRel = '') =>
+                    `<a href="${href}" class="social-link ${a.name} ${name}" data-network="${name}" target="_blank" rel="noopener ${extraRel}" aria-label="${label}" title="${label}">
+                       ${iconSvg(name)}
+                     </a>`;
+
+                // X / Twitter
+                if (val(a.twitter)) {
+                    const u = val(a.twitter);
+                    parts.push(anchor('twitter', 'Twitter', isUrl(u) ? u : `https://x.com/${u.replace(/^@/, '')}`));
+                }
+
+                // Facebook
+                if (val(a.facebook)) {
+                    const u = val(a.facebook);
+                    parts.push(anchor('facebook', 'Facebook', isUrl(u) ? u : `https://facebook.com/${u.replace(/^\//, '')}`));
+                }
+
+                // LinkedIn
+                if (val(a.linkedin)) {
+                    const u = val(a.linkedin);
+                    parts.push(anchor('linkedin', 'LinkedIn', isUrl(u) ? u : `https://www.linkedin.com/in/${u.replace(/^@/, '')}`));
+                }
+
+                // Bluesky
+                if (val(a.bluesky)) {
+                    const u = val(a.bluesky);
+                    parts.push(anchor('bluesky', 'Bluesky', isUrl(u) ? u : `https://bsky.app/profile/${u.replace(/^@/, '')}`));
+                }
+
+                // Threads
+                if (val(a.threads)) {
+                    const u = val(a.threads);
+                    parts.push(anchor('threads', 'Threads', isUrl(u) ? u : `https://www.threads.net/@${u.replace(/^@/, '')}`));
+                }
+
+                // Mastodon (full URL or @user@server)
+                if (val(a.mastodon)) {
+                    const href = normalizeMastodonUrl(val(a.mastodon), opts.mastodonInstance);
+                    if (href) parts.push(anchor('mastodon', 'Mastodon', href, 'me'));
+                }
+
+                // TikTok
+                if (val(a.tiktok)) {
+                    const u = val(a.tiktok);
+                    parts.push(anchor('tiktok', 'TikTok', isUrl(u) ? u : `https://www.tiktok.com/@${u.replace(/^@/, '')}`));
+                }
+
+                // YouTube
+                if (val(a.youtube)) {
+                    const u = val(a.youtube);
+                    parts.push(anchor('youtube', 'YouTube', isUrl(u) ? u : `https://www.youtube.com/@${u.replace(/^@/, '')}`));
+                }
+
+                // Instagram
+                if (val(a.instagram)) {
+                    const u = val(a.instagram);
+                    parts.push(anchor('instagram', 'Instagram', isUrl(u) ? u : `https://www.instagram.com/${u.replace(/^@/, '')}/`));
+                }
+
+                // Website
+                if (val(a.website)) {
+                    parts.push(anchor('website', 'Website', val(a.website)));
+                }
+
+                return parts.length ? `<div class="flex flex-wrap items-center gap-3 text-sm">${parts.join('')}</div>` : '';
+            }
+
+
+            function authorCardHTML(a){
+                var imgHTML = authorPictureHTML(a);
+
+                return (
+                    '<div class="section-authors-card border border-[--border-color] hover:border-[--text-primary] flex flex-col rounded-sm group">'
+                    + imgHTML
+                    + '<div class="flex flex-1 flex-col justify-between gap-4 p-5 xs:p-6">'
+                    + '<a href="'+a.url+'" aria-label="'+a.name+'" class="flex flex-col gap-1.5">'
+                    + '<h2 class="section-authors-name font-heading font-medium text-[--text-primary] text-lg xs:text-xl lg:text-2xl hover:text-[--text-secondary]">'+a.name+'</h2>'
+                    + (a.bio ? '<p class="section-authors-bio text-[--text-secondary] font-medium text-sm">'+a.bio+'</p>' : '')
+                    + '</a>'
+                    + '<div class="flex flex-col justify-between gap-4">'
+                    + socialLinksHTML(a)
+                    + '<a href="'+a.url+'" aria-label="More articles by '+a.name+'" class="flex items-center gap-2">'
+                    + '<span class="text-[--text-primary] text-sm font-medium">'+postCountText(a.count && a.count.posts)+'</span>'
+                    + '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-5 transition-transform group-hover:translate-x-1 icon icon-tabler icon-tabler-arrow-right">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+    <path d="M5 12l14 0" />
+    <path d="M13 18l6 -6" />
+    <path d="M13 6l6 6" />
+</svg>'
+                    + '</a>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                );
+            }
+
+            // ---- Preflight: if the SSR page already contains all authors, disable & relabel immediately
+            var ssrCount = $grid.querySelectorAll('.section-authors-card').length;
+
+            if (ssrCount === 0 || ssrCount < limit) {
+                // Fewer than 100 authors rendered ⇒ no page 2
+                hasMore = false;
+                setAllLoadedState();
+            } else {
+                // Exactly 100 rendered: check if a next page exists by probing page 2 with limit=1
+                api.authors.browse({ page: page, limit: 1, fields: 'id' })
+                    .then(function (arr) {
+                        if (!arr || !arr.length) {
+                            hasMore = false;
+                            setAllLoadedState();
+                        }
+                    })
+                    .catch(function (err) {
+                        if (err && (err.name === 'NotFoundError' || err.status === 404)) {
+                            hasMore = false;
+                            setAllLoadedState();
+                        } else {
+                            console.warn('Author page probe failed:', err);
+                        }
+                    });
+            }
+
+            async function loadNextPage(){
+                if (loading || !hasMore) return;
+                loading = true;
+                var initialLabel = $btn.textContent;
+                $btn.disabled = true;
+                $btn.textContent = '{{t "Loading…"}}';
+
+                try {
+                    var list = await api.authors.browse({
+                        page: page,
+                        limit: limit,
+                        include: 'count.posts',
+                        order: 'count.posts desc'
+                    });
+
+                    list.forEach(function(a){
+                        $grid.insertAdjacentHTML('beforeend', authorCardHTML(a));
+                    });
+
+                    var meta = list && list.meta && list.meta.pagination;
+                    if (meta) {
+                        hasMore = Boolean(meta.next);
+                        page = meta.next || page;
+                    } else {
+                        hasMore = list.length === limit;
+                        if (hasMore) page += 1;
+                    }
+                } catch (err) {
+                    console.error(err);
+                    var msg = document.createElement('p');
+                    msg.className = 'text-center text-sm text-red-600';
+                    msg.textContent = 'Failed to load authors: ' + (err && err.message ? err.message : err);
+                    $grid.appendChild(msg);
+                    // allow retry
+                    hasMore = true;
+                } finally {
+                    loading = false;
+                    if (hasMore) {
+                        restoreButtonLabel(initialLabel);
+                    } else {
+                        setAllLoadedState();
+                    }
+                }
+            }
+
+            $btn.addEventListener('click', loadNextPage);
+        });
+    })();
+</script>
+{{> join-populizt}}

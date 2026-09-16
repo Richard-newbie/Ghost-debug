@@ -1,0 +1,288 @@
+{{#if global}}
+    <script>
+        // Capture user overrides if they exist
+        const USER_OVERRIDES = window.GLOBAL || {};
+        // Define defaults
+        const GLOBAL_DEFAULTS = {
+            //------------------------------------------------------------------------------------------------------------------------------
+            //Do not change below variables
+            //------------------------------------------------------------------------------------------------------------------------------
+            CURRENT_PAGE: parseInt('{{pagination.page}}'),
+            NEXT_PAGE: parseInt('{{pagination.next}}'),
+            NEXT_PAGE_LINK: '',
+            MAX_PAGES: parseInt('{{pagination.pages}}'),
+            LAST_PAGE: `{{pagination.page}}` === `{{pagination.pages}}`,
+            POSTS_PER_PAGE: parseInt('{{@config.posts_per_page}}'),
+            TOTAL_POSTS: parseInt('{{pagination.total}}'),
+            MAIN_LOCALE: '{{#if @custom.main_locale}}{{@custom.main_locale}}{{else}}en{{/if}}',
+            LOCALES: '{{#if @custom.locales}}{{@custom.locales}}{{/if}}',
+            ROOT_LOCALE: '{{@site.locale}}',
+            //------------------------------------------------------------------------------------------------------------------------------
+            //Modify the below variables as per your requirements in Code Injection. Read the docs for more info.
+            //------------------------------------------------------------------------------------------------------------------------------
+            //1. Open external links in a new tab?
+            OPEN_LINKS_IN_NEW_TAB: true,//accepted values: true, false
+            //2. Enable image lightbox popup?
+            ENABLE_IMAGE_LIGHTBOX: true,//accepted values: true, false
+            //3. Auto hide the navigation header when scrolling down?
+            AUTO_HIDE_HEADER: true,//accepted values: true, false
+            //4. Default color scheme (light/dark/system)
+            DEFAULT_COLOR_SCHEME: 'system',//accepted values: dark, light, system
+            //5. Turn on if you want to automatically redirect a visitor to the website in visitor's browser language.
+            REDIRECT_ON_LOCALE: false, //accepted values: true, false
+            //6. Pagination style (load-more/paginated-pages) - Only applicable on paginated content for posts. Authors and Tags pages will always be 'load more' button.
+            PAGINATION_STYLE: 'load-more', //accepted values: load-more, paginated-pages
+            //7. Contact Endpoint for the Contact form on the Contact page
+            CONTACT_ENDPOINT: '',//If no endpoint is added, the contact form will be hidden
+            //8. Contact Page WhatsApp link
+            WHATSAPP_LINK: '',//If no link is added, the WhatsApp will be hidden
+            //9. Use locale-specific domains instead of /{lang}/ paths? Provide locale-specific domains in LOCALE_DOMAINS variable below.
+            USE_LOCALE_DOMAINS: false,//accepted values: true, false
+            //10. Map language code to domain (e.g., { en: "englishdomain.com", hi: "hindidomain.com", es: "spanishdomain.com"})
+            LOCALE_DOMAINS: {},
+            //11. When switching locale domains, open the homepage instead of keeping the current path?
+            LOCALE_DOMAIN_HOME_ONLY: false,//accepted values: true, false
+            //12. Comma-separated paths to keep when LOCALE_DOMAIN_HOME_ONLY is enabled (e.g., "account, membership, signin")
+            LOCALE_DOMAIN_HOME_IGNORE_PATHS: '',//empty means redirect all paths to the homepage
+        };
+
+        // Merge: user overrides take precedence over global defaults
+        window.GLOBAL = Object.assign({}, GLOBAL_DEFAULTS, USER_OVERRIDES);
+        const GLOBAL = window.GLOBAL;
+
+        const locales = GLOBAL.LOCALES.split(',');
+        let allLangCodes = [];
+        locales.forEach(function (locale) {
+            const langCode = locale.split("-")[0];
+            allLangCodes.push(langCode);
+        });
+    </script>
+{{/if}}
+
+{{#if post}}
+    <script>
+        var noImageAuthors = document.getElementsByClassName("first-letter");
+        if(noImageAuthors){
+            for(count=0; count<noImageAuthors.length; count++){
+                noImageAuthors[count].innerHTML = noImageAuthors[count].innerHTML.slice(0,1);
+            }
+        }
+    </script>
+{{/if}}
+
+{{#if post-toc}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.32.2/tocbot.min.js"></script>
+    <script>
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: "#toc-container",
+            // Where to grab the headings to build the table of contents.
+            contentSelector: "#blog-article",
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: "h1, h2, h3",
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+            // Smooth scrolling enabled.
+            scrollSmooth: true,
+            headingsOffset: 140,
+            scrollSmoothOffset: -140
+        });
+    </script>
+{{/if}}
+
+{{#if navigation}}
+    <script>
+        const primaryNavigation = document.getElementById("primary-navigation");
+        var allNavigationItems = primaryNavigation.getElementsByTagName("li");
+        var primaryNavigationHTML = "";
+        for(var count=0; count < allNavigationItems.length; count++){
+            var li = allNavigationItems[count];
+            if(li.classList.contains("static-menu")){
+                primaryNavigationHTML = primaryNavigationHTML + li.outerHTML;
+            } else {
+                var dataLink = li.getAttribute("data-link");
+                var dataLabel = li.getAttribute("data-label");
+
+                //If this is a parent menu item
+                if(dataLink && dataLink === "#"){
+                    //Check if menu has next item
+                    if(allNavigationItems[count+1]){
+                        var nextLi = allNavigationItems[count+1];
+                        var nextDataLink = nextLi.getAttribute("data-link");
+                        var nextDataLabel = nextLi.getAttribute("data-label");
+                        if(nextDataLabel && !nextDataLabel.startsWith('-')){
+                            primaryNavigationHTML = primaryNavigationHTML +
+                                `<li class=""><a href="`+dataLink+`" title="`+dataLabel+` "class="inline-block w-full text-[--text-primary]">`+dataLabel+`</a></li>`;
+                        } else {
+                            primaryNavigationHTML = primaryNavigationHTML +
+                                `<li data-open="false" class="dropdown cursor-pointer relative group lg:-my-8 lg:h-[4.5rem] lg:flex lg:items-center" aria-label="dropdown">
+                                <button class="w-full lg:w-auto flex items-center justify-between gap-2">
+                                    <span class="text-[--text-primary] ">`+dataLabel+`</span>
+                                    <img src="{{asset "img/arrow.svg"}}" alt="arrow" width="14" height="14" aria-hidden="true" class="hidden lg:block filter-theme h-3.5 lg:group-data-[open='true']:rotate-180 transition-transform duration-300" />
+                                </button>
+                            <div class="hidden lg:block absolute top-0 left-0 h-full w-full"></div>
+                            <ul class="lg:rounded-sm lg:absolute lg:left-0 lg:top-full flex flex-col gap-2 lg:gap-0 font-medium text-sm bg-[--header-bg] lg:border border-[--border-color] p-5 pb-0 lg:p-0 w-max min-w-44">
+                            `;
+                        }
+                    }
+                } else if(dataLabel && dataLabel.startsWith('-')){
+                    primaryNavigationHTML = primaryNavigationHTML +
+                        `<li><a href="`+dataLink+`" title="`+dataLabel.replace("-","")+`"class="inline-block w-full text-[--text-secondary] hover:text-[--text-primary]">`+dataLabel.replace("-","")+`</a></li>`;
+                    //if next item is not sub item, then close the ul and li
+                    if(allNavigationItems[count+1]){
+                        var nextLi = allNavigationItems[count+1];
+                        var nextDataLink = nextLi.getAttribute("data-link");
+                        var nextDataLabel = nextLi.getAttribute("data-label");
+                        if(nextDataLabel && !nextDataLabel.startsWith('-')){
+                            primaryNavigationHTML = primaryNavigationHTML +
+                                `</ul></li>`;
+                        }
+                    }
+                } else {
+                    primaryNavigationHTML = primaryNavigationHTML +
+                        `<li class=""><a href="`+dataLink+`" title="`+dataLabel+` "class="inline-block w-full text-[--text-primary]">`+dataLabel+`</a></li>`;
+                }
+            }
+        }
+        primaryNavigation.innerHTML=primaryNavigationHTML;
+    </script>
+{{/if}}
+
+{{#if theme}}
+    <script>
+        const THEME = GLOBAL.DEFAULT_COLOR_SCHEME;
+        var currentTheme = localStorage.getItem("theme") ? localStorage.getItem("theme") : null;
+        function initialThemeSet(currentTheme) {
+            if (currentTheme) {
+                document.documentElement.setAttribute("data-theme", currentTheme);
+            } else {
+                let preferredTheme;
+                if (THEME.toLowerCase() === "system") {
+                    const preferredColorScheme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+                    preferredTheme = localStorage.getItem("theme") || preferredColorScheme;
+                } else {
+                    preferredTheme = localStorage.getItem("theme") || THEME.toLowerCase();
+                }
+                document.documentElement.setAttribute("data-theme", preferredTheme);
+                localStorage.setItem("theme", preferredTheme);
+            }
+        }
+        initialThemeSet(currentTheme);
+
+        const switchTheme = (e) => {
+            theme = localStorage.getItem("theme");
+            if (theme) {
+                if (theme === "light") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                    localStorage.setItem("theme", "dark");
+                } else if (theme === "dark") {
+                    document.documentElement.setAttribute("data-theme", "light");
+                    localStorage.setItem("theme", "light");
+                }
+            }
+        };
+
+        const handleTheme = () => {
+            const themeToggle = document.getElementById("theme-toggler");
+            currentTheme = localStorage.getItem("theme");
+            if (currentTheme) {
+                document.documentElement.setAttribute("data-theme", currentTheme);
+                if (currentTheme === "dark") {
+                    if(themeToggle){
+                        themeToggle.checked = true;
+                    }
+                }
+            }
+            if(themeToggle){
+                themeToggle.addEventListener("click", switchTheme);
+            }
+        };
+        window.addEventListener('DOMContentLoaded', (event) => {
+            handleTheme();
+        });
+    </script>
+{{/if}}
+
+{{#if redirectToLocale}}
+    <script>
+        if(GLOBAL.REDIRECT_ON_LOCALE) {
+            var allLocales = [];
+            const redirectToLocales = GLOBAL.LOCALES.split(',');
+            const browserLang = new Intl.Locale(navigator.language).language;
+            redirectToLocales.forEach((locale) => {
+                const currLocale = new Intl.Locale(locale).language;
+                allLocales.push(currLocale);
+            });
+            if (browserLang !== GLOBAL.ROOT_LOCALE && allLocales.indexOf(browserLang) > -1) {
+                window.location = getLocaleURL(browserLang);
+            }
+        }
+    </script>
+{{/if}}
+
+{{#if getLocaleURL}}
+    <script>
+        const getLocaleURL = (locale) => {
+            const protocol = window.location.protocol;
+            var port = window.location.port;
+            const domain = window.location.hostname;
+            var path = location.href.split(location.host)[1].replace(/^\//,'');
+            const useLocaleDomains = GLOBAL.USE_LOCALE_DOMAINS === true || GLOBAL.USE_LOCALE_DOMAINS === "true";
+            const getLocaleDomain = (localeCode) => {
+                if(!useLocaleDomains || !GLOBAL.LOCALE_DOMAINS){
+                    return domain;
+                }
+                const langCode = localeCode.split("-")[0];
+                let localeDomain = GLOBAL.LOCALE_DOMAINS[langCode] || GLOBAL.LOCALE_DOMAINS[localeCode];
+                if(typeof localeDomain !== "string"){
+                    return domain;
+                }
+                localeDomain = localeDomain.trim().replace(/^https?:\/\//, "").replace(/\/.*$/, "");
+                return localeDomain || domain;
+            };
+            const getHomeIgnorePaths = () => {
+                if(!GLOBAL.LOCALE_DOMAIN_HOME_IGNORE_PATHS){
+                    return [];
+                }
+                return String(GLOBAL.LOCALE_DOMAIN_HOME_IGNORE_PATHS)
+                    .split(",")
+                    .map((item) => item.trim().replace(/^\//, ""))
+                    .filter(Boolean);
+            };
+            const shouldKeepPathForLocaleDomain = (currentPath) => {
+                const ignorePaths = getHomeIgnorePaths();
+                if(ignorePaths.length === 0){
+                    return false;
+                }
+                return ignorePaths.some((ignorePath) => currentPath === ignorePath || currentPath.startsWith(ignorePath + "/"));
+            };
+            if(allLangCodes.some(someLocale => path.startsWith(someLocale+"/"))){
+                path = path.substring(3);
+            }
+            if(port){
+                port = ":"+port;
+            } else {
+                port="";
+            }
+            if(useLocaleDomains){
+                const homeOnly = GLOBAL.LOCALE_DOMAIN_HOME_ONLY === true || GLOBAL.LOCALE_DOMAIN_HOME_ONLY === "true";
+                const localeDomain = getLocaleDomain(locale);
+                const portSuffix = localeDomain.includes(":") ? "" : port;
+                const targetPath = homeOnly && !shouldKeepPathForLocaleDomain(path) ? "" : path;
+                var localeURL = protocol + "//" + localeDomain + portSuffix + "/" + targetPath;
+                return localeURL;
+            }
+            const homeOnly = GLOBAL.LOCALE_DOMAIN_HOME_ONLY === true || GLOBAL.LOCALE_DOMAIN_HOME_ONLY === "true";
+            if(GLOBAL.MAIN_LOCALE === locale){
+                locale = "";
+            } else {
+                locale = locale + "/";
+            }
+            if(homeOnly && !shouldKeepPathForLocaleDomain(path)){
+                path = "";
+            }
+            var localeURL = protocol + "//" + domain + port + "/" + locale + path;
+            return localeURL;
+        }
+    </script>
+{{/if}}

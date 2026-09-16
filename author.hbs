@@ -1,0 +1,75 @@
+{{!< default}}
+{{#contentFor 'title'}}{{meta_title}}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+        {{#author}}
+        {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+        {{!-- Main Language at www.example.com --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/author/{{slug}}/" hreflang="{{@custom.main_locale}}"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/author/{{slug}}/" hreflang="x-default"/>
+
+            {{!-- If
+                USE_LOCALE_DOMAINS = false
+                LOCALE_DOMAIN_HOME_ONLY = false
+                All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+            --}}
+            <link rel="alternate" href="{{@custom.main_locale_url}}/hi/author/{{slug}}/" hreflang="hi"/>
+            <link rel="alternate" href="{{@custom.main_locale_url}}/es/author/{{slug}}/" hreflang="es"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = true
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+        --}}
+        {{!--
+        <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+        <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+        --}}
+
+        {{!-- If
+            LOCALE_DOMAIN_HOME_ONLY = true
+            We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+        --}}
+        {{/author}}
+    {{/contentFor}}
+{{/if}}
+<section class="section-author py-10 xs:py-12 md:py-16">
+  <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+    {{#author}}
+      <div class="flex flex-col items-center justify-center gap-4 xs:gap-6 lg:gap-8">
+        {{#if profile_image}}
+          {{> images/profile-image-l classes="section-author-img h-64 lg:h-80 aspect-square rounded-full object-cover object-center"}}
+        {{/if}}
+        <h1 class="section-author-name font-heading text-[--text-primary] text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none text-center"> {{name}} </h1>
+        {{#if bio}}
+          <p class="section-author-bio text-[--text-secondary] font-medium text-center text-sm xs:text-base w-full xs:max-w-[90%] md:max-w-[60%] lg:max-w-[40%] mx-auto"> {{bio}} </p>
+        {{/if}}
+        {{> author-social-links size="size-12"}}
+        <div class="flex items-center gap-4 font-medium text-center text-sm xs:text-base">
+          <div class="flex items-center gap-2">
+            <img src="{{asset "img/blog.svg"}}" alt="blog" class="h-4 filter-theme" aria-hidden="true" />
+            <div class="text-[--text-primary]">{{plural ../pagination.total empty=(t 'No posts') singular=(t '1 post') plural=(t '% posts')}}</div>
+          </div>
+          {{#if location}}
+            <div class="text-[--text-primary]">|</div>
+            <div class="flex items-center gap-2">
+              <img src="{{asset "img/location.svg"}}" alt="location" class="h-4 filter-theme" aria-hidden="true" />
+              <div class="text-[--text-primary]">{{location}}</div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/author}}
+    <div class="h-px w-full bg-[--border-color]"></div>
+    <div class="flex flex-col gap-10 xs:gap-12 md:gap-16">
+      <div class="js-post-list grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 xs:gap-5 md:gap-16">
+        {{#foreach posts}}
+          {{> loop}}
+        {{/foreach}}
+      </div>
+    </div>
+    {{!-- Show pagination --}}
+    {{pagination}}
+  </div>
+</section>
+{{> join-populizt}}

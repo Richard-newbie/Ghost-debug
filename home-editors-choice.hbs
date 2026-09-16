@@ -1,0 +1,43 @@
+{{!-- Markup to show the 4 posts in Editors Choice section on the homepage --}}
+{{#get 'posts' filter='tags:hash-editors-choice' limit="4" include="tags,authors"}}
+    {{#if posts}}
+        <section class="section-editors-choice bg-[--dark-bg] py-10 xs:py-12 md:py-16 border-y border-[--dark-border]">
+            <div class="wrapper flex flex-col gap-6">
+                <h1 class="section-editors-choice-title font-heading text-white text-2xl xs:text-3xl lg:text-4xl font-medium leading-normal"> {{t "Editor's Choice"}} </h1>
+                <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-10 xs:gap-5 md:gap-8">
+                    {{#foreach posts}}
+                        <div class="section-editors-choice-card flex flex-col {{#if feature_image}}justify-between{{/if}} gap-4 group">
+                            <div class="flex flex-col gap-4">
+                                {{#if feature_image}}
+                                    <div class="w-full aspect-[1.5] overflow-hidden rounded-sm relative">
+                                        <a aria-label="{{title}}" href="{{url}}">
+                                            {{> images/feature-image-xl show_caption=false classes="section-editors-choice-card-img h-full w-full object-cover object-center group-hover:scale-[1.025] transition-transform duration-300"}}
+                                        </a>
+                                        {{> post-identifier-icons
+                                            div_classes="aspect-square rounded-sm flex items-center justify-center cursor-pointer absolute top-1 h-6 bg-black/50 backdrop-blur-lg right-1"
+                                            img_classes="filter-white h-4"
+                                            is_featured_icon_left=true
+                                        }}
+                                    </div>
+                                {{/if}}
+                                {{#if tags}}
+                                    <div class="section-editors-choice-card-tags flex items-center gap-2 flex-wrap">
+                                        {{#foreach tags}}
+                                            <a aria-label="{{name}}" href="{{url}}" class="text-xs text-[--gray] font-medium border-[--gray] hover:text-[--white] hover:border-color-[--light-border-hover] border px-1.5 py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                                        {{/foreach}}
+                                    </div>
+                                {{/if}}
+                                <a aria-label="{{title}}" href="{{url}}">
+                                    <h2 class="section-editors-choice-card-title font-heading text-white font-medium text-lg xs:text-xl hover:underline underline-offset-2"> {{title}} </h2>
+                                </a>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                {{> post-meta is_dark_bg=true}}
+                            </div>
+                        </div>
+                    {{/foreach}}
+                </div>
+            </div>
+        </section>
+    {{/if}}
+{{/get}}

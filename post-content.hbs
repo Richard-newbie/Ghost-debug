@@ -1,0 +1,65 @@
+<section class="section-post-content {{post_class}} pt-6 pb-10 xs:py-12 md:py-16 lg:border-b border-[--border-color]">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+            <div class="mx-auto max-w-5xl">
+    {{!-- Feature Image now leads the page, complete and uncropped --}}
+    {{#if feature_image}}
+        <div class="section-post-content-img-wrapper col-lg-12 text-center">
+            {{> images/feature-image-xxl heroImage=true show_caption=true classes="section-post-content-img w-full rounded-sm object-cover object-center"}}
+        </div>
+    {{/if}}
+    <div class="flex flex-col gap-6 {{#if feature_image}}mt-8 xs:mt-12{{/if}}">
+        <h1 class="section-post-content-title font-heading text-[--text-primary] text-4xl xs:text-[2.75rem] md:text-5xl lg:text-[3.5rem] font-medium"> {{title}} </h1>
+        {{#if custom_excerpt}}
+            <p class="section-post-content-custom-excerpt text-[--text-secondary] font-medium text-base xs:text-lg md:text-xl"> {{custom_excerpt }} </p>
+        {{/if}}
+        <div class="h-px w-full bg-[--border-color]"></div>
+        <p class="text-[--text-secondary] text-sm font-medium uppercase tracking-wide">{{t "By"}} Chris Markl</p>
+        <div class="flex items-center justify-end flex-wrap gap-4">
+            <div class="section-post-content-post-share flex items-center gap-1">
+                {{> post-share}}
+            </div>
+        </div>
+    </div>
+                <div class="grid grid-cols-1 {{#if sidebar}}lg:grid-cols-[2fr_1fr]{{else if sticky-toc}}lg:grid-cols-[1fr_2fr]{{else}}lg:mx-40{{/if}} gap-16 lg:gap-12 mt-8 xs:mt-12">
+                    {{^if sticky-toc}}<div class="flex flex-col gap-8">{{/if}}
+                        {{#if toc}}{{> post-table-of-content}}{{/if}}
+                        {{#if sticky-toc}}{{> post-table-of-content sticky=true}}{{/if}}
+                        {{#if sticky-toc}}<div class="flex flex-col gap-8">{{/if}}
+                        {{!-- To remove the drop cap from the article, please remove the class 'has-dropcap' from the below line and vice-versa--}}
+                        <article id="blog-article" class="{{#if sticky-toc}} sticky-toc-blog-content {{/if}} {{#if sidebar}} sticky-sidebar-blog-content {{/if}} post-page-content text-[--text-primary] text-lg pb-4">
+                            {{content}}
+                        </article>
+                    {{#if sticky-toc}}
+                    {{#if tags}}
+                        <div class="section-post-content-post-tags flex items-center justify-end gap-2 flex-wrap">
+                            {{#foreach tags}}
+                                <a href="{{url}}" aria-label="{{name}}" class="text-sm text-[--text-accent] border border-[--border-accent] uppercase font-medium p-1 py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                            {{/foreach}}
+                        </div>
+                    {{/if}}
+                        </div>{{/if}}
+
+                        {{^if sticky-toc}}
+                            {{#if tags}}
+                                <div class="section-post-content-post-tags flex items-center gap-2 flex-wrap">
+                                    {{#foreach tags}}
+                                        <a href="{{url}}" aria-label="{{name}}" class="text-sm text-[--text-accent] border border-[--border-accent] uppercase font-medium p-1 py-0.5 w-min rounded-sm text-nowrap"> {{name}} </a>
+                                    {{/foreach}}
+                                </div>
+                            {{/if}}
+                            {{!-- Horizontal Dividing Line --}}
+                            <div class="section-post-content-post-authors bg-[--border-color] h-px w-full"></div>
+                                {{> post-authors}}
+                            </div>
+                        {{/if}}
+                    {{#if sidebar}}{{> post-sticky-subscribe-form}}{{/if}}
+                </div>
+                {{#if sticky-toc}}
+                    <div class="bg-[--border-color] h-px w-full mb-8 mt-8 lg:mt-16"></div>
+                    <div class="section-post-content-post-authors flex flex-col gap-6">
+                        {{> post-authors}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    </section>

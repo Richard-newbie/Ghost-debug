@@ -1,0 +1,38 @@
+<div class="js-pagination-container">
+    <div class="pagination mx-auto grid grid-cols-2 xs:grid-cols-3 gap-y-5 gap-x-10 xs:gap-x-6 mt-2 place-items-center">
+        <a aria-label="{{t "Prev"}}" href="{{page_url prev}}" class="page-item {{^if prev}}disabled{{/if}} order-2 xs:order-1 flex items-center gap-2 border border-[--border-color] hover:bg-[--nav-btn-hover] rounded-sm px-3 py-1.5 group">
+            <img src="{{asset "img/arrow-next.svg"}}" alt="previous" aria-hidden="true" class="rotate-180 filter-theme h-5 group-hover:-translate-x-1 transition-transform" />
+            <span class="text-[--text-primary] text-base font-semibold">{{t "Prev"}}</span>
+        </a>
+        <div class="order-1 xs:order-2 col-span-2 xs:col-span-1 text-[--text-secondary] text-sm font-semibold text-center"> {{t "Page "}}{{page}}{{t " of "}}{{pages}} </div>
+        <a aria-label="{{t "Next"}}" href="{{page_url next}}" class="page-item {{^if next}}disabled{{/if}} order-3 flex items-center gap-2 border border-[--border-color] hover:bg-[--nav-btn-hover] rounded-sm px-3 py-1.5 group">
+            <span class="text-[--text-primary] text-base font-semibold">{{t "Next"}}</span>
+            <img src="{{asset "img/arrow-next.svg"}}" alt="next" aria-hidden="true" class="filter-theme h-5 group-hover:translate-x-1 transition-transform" />
+        </a>
+    </div>
+    <div class="js-infinite-pagination mx-auto flex flex-col items-center justify-center gap-4 lg:gap-6">
+        <p class="mb-4 text-[--text-secondary] text-sm">{{t "Showing "}}<span id="currArticles">{{limit}}</span>{{t " of "}}{{total}}{{t " total posts"}}</p>
+        <button type="submit" data-no-posts-text="{{t "No more posts"}}" class="js-load-posts w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+            <span class="h-[26px] flex items-center justify-center"> {{t "Load "}}{{limit}}{{t " more posts"}}</span>
+        </button>
+    </div>
+</div>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const paginationContainer = document.querySelector('.js-pagination-container');
+        if (!paginationContainer) return;
+
+        const paginationStyle = typeof GLOBAL !== 'undefined' ? GLOBAL.PAGINATION_STYLE : 'load-more';
+        const regularPagination = paginationContainer.querySelector('.pagination');
+        const infinitePagination = paginationContainer.querySelector('.js-infinite-pagination');
+
+        if (paginationStyle === 'paginated-pages') {
+            if (infinitePagination) infinitePagination.style.display = 'none';
+            if (regularPagination) regularPagination.style.display = 'grid';
+        } else {
+            if (regularPagination) regularPagination.style.display = 'none';
+            if (infinitePagination) infinitePagination.style.display = 'flex';
+        }
+    });
+</script>

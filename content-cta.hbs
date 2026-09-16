@@ -1,0 +1,27 @@
+<div class="post-sneak-peek fading">
+    {{{html}}}
+</div>
+{{!-- Show SignUp options based on visitor's access --}}
+<section class="content-cta bg-[--dark-bg] py-10 border border-[--dark-border] rounded-sm md:py-16 px-4">
+    <div class="wrapper flex flex-col items-center justify-center gap-2">
+        <h4 class="content-cta-heading m-0 max-w-[40rem] font-heading text-center text-white text-2xl xs:text-3xl font-medium leading-normal">
+            {{#has visibility="paid"}}{{t "Remaining content is for paid members only."}}{{/has}}
+            {{#has visibility="members"}}{{t "Remaining content is for members only."}}{{/has}}
+            {{#has visibility="tiers"}}{{tiers prefix=(t 'Remaining content is for members on ') suffix=(t ' only.')}}{{/has}}
+        </h4>
+        <p class="content-cta-text text-center text-white">
+            {{#if @member}}
+                {{t "Thank you for being a member. Please upgrade your account to unlock more content."}}
+            {{else}}
+                {{#has visibility="paid"}} {{t "Please subscribe to any paid plan to unlock this article and more content."}} {{/has}}
+                {{#has visibility="members"}} {{t "Please become a free member to unlock this article and more content."}} {{/has}}
+                {{#has visibility="tiers"}} {{tiers lastSeparator=(t ' or ') prefix=(t 'Please subscribe to ') suffix=(t ' and unlock this article and more content.')}} {{/has}}
+            {{/if}}
+        </p>
+        <a aria-label="{{t "Join Free"}}" href="javascript:" data-portal="signup" class="content-cta-button kg-dummy inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">{{t "Join Free"}}</a>
+        {{^if @member}}
+            <span class="content-cta-footer-text text-sm text-center text-[--gray]">{{t "Already have an account? "}}<a aria-label="Sign In" href="javascript:" data-portal="signin" class="kg-dummy inline-block underline underline-offset-2 hover:text-[--footer-text-hover] ">{{t "Sign in"}}</a>
+            </span>
+        {{/if}}
+    </div>
+</section>

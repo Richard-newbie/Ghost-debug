@@ -1,0 +1,18 @@
+{{#if minimal}}
+    <span class="post-meta-minimal-date text-[--text-secondary] font-medium text-xs"><time datetime="{{date format="DD MMM YYYY"}}">{{date format="DD MMM YYYY"}}</time></span>
+    <div class="post-meta-minimal-sep text-xs text-[--text-secondary]"> &bullet; </div>
+    <span class="post-meta-minimal-read-time text-[--text-secondary] font-medium text-xs">{{reading_time minute=(t "1 Min") minutes=(t "% Min")}}</span>
+{{else}}
+    <div class="flex items-center gap-2 ">
+        <div class="post-meta-date flex items-center gap-2">
+            <span class="{{#if is_dark_bg}}text-[--gray]{{else}}text-[--text-secondary]{{/if}} font-medium text-xs"><time datetime="{{date format="DD MMM YYYY"}}">{{date format="DD MMM YYYY"}}</time></span>
+        </div>
+        <div class="post-meta-sep text-xs {{#if is_dark_bg}}text-[--gray]{{else}}text-[--text-secondary]{{/if}}"> &bullet; </div>
+        <div class="post-meta-read-time flex items-center gap-2">
+            <span class="{{#if is_dark_bg}}text-[--gray]{{else}}text-[--text-secondary]{{/if}} font-medium text-xs">{{reading_time minute=(t "1 Min") minutes=(t "% Min")}}</span>
+        </div>
+    </div>
+    <div class="post-meta-authors {{#if is_dark_bg}}text-[--gray]{{else}}text-[--text-secondary]{{/if}} post-authors text-xs xs:text-sm font-medium">
+        {{authors separator=", " prefix=(t "By: ")}}
+    </div>
+{{/if}}

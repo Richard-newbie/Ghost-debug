@@ -1,0 +1,155 @@
+{{!< default}}
+{{#contentFor 'title' }}{{t "Account" }}{{/contentFor}}
+{{#if @custom.enable_multilingual_features}}
+    {{#contentFor 'hreflangs'}}
+    {{!-- IMPORTANT: If you make any changes here, please copy these to error.hbs --}}
+    {{!-- Main Language at www.example.com --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/account-premium/" hreflang="{{@custom.main_locale}}"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/account-premium/" hreflang="x-default"/>
+
+        {{!-- If
+            USE_LOCALE_DOMAINS = false
+            LOCALE_DOMAIN_HOME_ONLY = false
+            All Other Languages at www.example.com/hi/my-blog or www.example.com/es/my-blog etc.
+        --}}
+        <link rel="alternate" href="{{@custom.main_locale_url}}/hi/account-premium/" hreflang="hi"/>
+        <link rel="alternate" href="{{@custom.main_locale_url}}/es/account-premium/" hreflang="es"/>
+
+    {{!-- If
+        USE_LOCALE_DOMAINS = true
+        LOCALE_DOMAIN_HOME_ONLY = false
+        All Other Languages at www.hindidomain.com/my-blog, www.spanishdomain.com/my-blog etc.
+    --}}
+    {{!--
+    <link rel="alternate" href="www.hindidomain.com{{url}}" hreflang="hi" />
+    <link rel="alternate" href="www.spanishdomain.com{{url}}" hreflang="es" />
+    --}}
+
+    {{!-- If
+        LOCALE_DOMAIN_HOME_ONLY = true
+        We cannot determine if all blogs/pages would be translated, so we do not add any alternate hreflangs.
+    --}}
+    {{/contentFor}}
+{{/if}}
+    <section class="section-author py-10">
+        <div class="wrapper flex flex-col gap-10 xs:gap-12 md:gap-16">
+                <div class="flex flex-col items-center justify-center gap-4 xs:gap-6 lg:gap-8">
+                    <h1 class="section-author-name font-heading text-[--text-primary] text-2xl xs:text-4xl lg:text-[2.75rem] font-medium leading-none text-center">{{t "My Account"}}</h1>
+                </div>
+                <div class="h-px w-full bg-[--border-color]"></div>
+                <div class="wrapper flex flex-col items-center gap-12">
+                    <div class="flex flex-col gap-2 xs:gap-4"><h2 class="font-heading text-[--text-primary] text-xl font-medium leading-none text-center">Member details</h2></div>
+                    <div class="grid grid-cols-1 gap-16 lg:gap-12 w-full md:max-w-[39rem] border border-[--border-color] rounded-sm p-6">
+                        <div class="section-contact-social-links order-2 lg:order-1 flex flex-col gap-12">
+                            <div>
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+                                            </div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Name"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto">
+                                            <div class="text-[--text-primary]">Jamie Smith</div>
+                                        </div>
+                                    </div>
+                                <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-5 aspect-square">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                                        </div>
+                                        <div class="text-[--text-primary] font-medium">{{t "Email"}}</div>
+                                    </div>
+                                    <div class="flex items-center ml-auto">
+                                        <div class="text-[--text-primary]">jamie@example.com</div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-5 aspect-square">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-lock"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z" /><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M8 11v-4a4 4 0 1 1 8 0v4" /></svg>
+                                        </div>
+                                        <div class="text-[--text-primary] font-medium">{{t "Access"}}</div>
+                                    </div>
+                                    <div class="flex items-center ml-auto">
+                                            <div class="text-[--text-primary]">{{t "Premium Plan"}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrapper flex flex-col items-center gap-12">
+                        <div class="flex flex-col gap-2 xs:gap-4">
+                            <h2 class="font-heading text-[--text-primary] text-xl font-medium leading-none text-center">1. Monthly $5 {{t "Plan"}}</h2>
+                        </div>
+                        <div class="grid grid-cols-1 gap-16 lg:gap-12 w-full md:max-w-[39rem] border border-[--border-color] rounded-sm p-6">
+                            <div class="section-contact-social-links order-2 lg:order-1 flex flex-col gap-12">
+                                <div>
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-receipt-dollar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" /><path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 6v10" /></svg></div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Plan Type"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto"><div class="text-[--text-primary]">Monthly</div></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-coin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg></div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Price"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto"><div class="text-[--text-primary]">$5/month</div></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="filter-theme icon icon-tabler icons-tabler-filled icon-tabler-toggle-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 9a3 3 0 1 1 -3 3l.005 -.176a3 3 0 0 1 2.995 -2.824" /><path d="M16 5a7 7 0 0 1 0 14h-8a7 7 0 0 1 0 -14zm0 2h-8a5 5 0 1 0 0 10h8a5 5 0 0 0 0 -10" /></svg></div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Status"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto"><div class="text-[--text-primary]">active</div></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-calendar-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M16 19h6" /><path d="M19 16v6" /></svg></div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Started on"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto"><div class="text-[--text-primary]">31 Dec 2020</div></div>
+                                    </div>
+
+
+                                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                            <div class="flex items-center gap-2">
+                                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-calendar-repeat"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h12" /><path d="M20 14l2 2h-3" /><path d="M20 18l2 -2" /><path d="M19 16a3 3 0 1 0 2 5.236" /></svg></div>
+                                                <div class="text-[--text-primary] font-medium">{{t "Renews on"}}</div>
+                                            </div>
+                                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">31 July 2025</div></div>
+                                        </div>
+
+
+                                    <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-credit-card"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M3 10l18 0" /><path d="M7 15l.01 0" /><path d="M11 15l2 0" /></svg></div>
+                                            <div class="text-[--text-primary] font-medium">{{t "Card used"}}</div>
+                                        </div>
+                                        <div class="flex items-center ml-auto"><div class="text-[--text-primary]">**** **** **** 4242</div></div>
+                                    </div>
+                                </div>
+
+                                <div class="button-wrapper justify-between w-full">
+                                    <a href="javascript:"  data-members-edit-billing class="edit-button text-center xs:col-span-2 w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                                        {{t "Edit Billing Info"}}
+                                    </a>
+
+                                    <a href="javascript:"  data-members-edit-billing class="cancel-button text-center xs:col-span-2 w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                                        {{t "Cancel subscription"}}
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>

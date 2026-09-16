@@ -1,0 +1,80 @@
+    <div class="wrapper flex flex-col items-center gap-12">
+        <div class="flex flex-col gap-2 xs:gap-4">
+            <h2 class="font-heading text-[--text-primary] text-xl font-medium leading-none text-center">{{@number}}. {{plan.nickname}} {{price plan}} {{t "Plan"}}</h2>
+        </div>
+            <div class="grid grid-cols-1 gap-16 lg:gap-12 w-full md:max-w-[39rem] border border-[--border-color] rounded-sm p-6">
+                <div class="section-contact-social-links order-2 lg:order-1 flex flex-col gap-12">
+                    <div>
+                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                            <div class="flex items-center gap-2">
+                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-receipt-dollar"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" /><path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 6v10" /></svg></div>
+                                <div class="text-[--text-primary] font-medium">{{t "Plan Type"}}</div>
+                            </div>
+                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{plan.nickname}}</div></div>
+                        </div>
+
+                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                            <div class="flex items-center gap-2">
+                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-coin"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg></div>
+                                <div class="text-[--text-primary] font-medium">{{t "Price"}}</div>
+                            </div>
+                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{price plan}}/{{plan.interval}}</div></div>
+                        </div>
+
+                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                            <div class="flex items-center gap-2">
+                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="filter-theme icon icon-tabler icons-tabler-filled icon-tabler-toggle-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 9a3 3 0 1 1 -3 3l.005 -.176a3 3 0 0 1 2.995 -2.824" /><path d="M16 5a7 7 0 0 1 0 14h-8a7 7 0 0 1 0 -14zm0 2h-8a5 5 0 1 0 0 10h8a5 5 0 0 0 0 -10" /></svg></div>
+                                <div class="text-[--text-primary] font-medium">{{t "Status"}}</div>
+                            </div>
+                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{status}}</div></div>
+                        </div>
+
+                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                            <div class="flex items-center gap-2">
+                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-calendar-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M16 19h6" /><path d="M19 16v6" /></svg></div>
+                                <div class="text-[--text-primary] font-medium">{{t "Started on"}}</div>
+                            </div>
+                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{date start_date format="DD MMM YYYY"}}</div></div>
+                        </div>
+
+                        {{#if cancel_at_period_end}}
+                            <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                <div class="flex items-center gap-2">
+                                    <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-calendar-cancel"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17 21l4 -4" /></svg></div>
+                                    <div class="text-[--text-primary] font-medium">{{t "Expires on"}}</div>
+                                </div>
+                                <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{date current_period_end format="DD MMM YYYY"}}</div></div>
+                            </div>
+                        {{else}}
+                            <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                                <div class="flex items-center gap-2">
+                                    <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-calendar-repeat"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h12" /><path d="M20 14l2 2h-3" /><path d="M20 18l2 -2" /><path d="M19 16a3 3 0 1 0 2 5.236" /></svg></div>
+                                    <div class="text-[--text-primary] font-medium">{{t "Renews on"}}</div>
+                                </div>
+                                <div class="flex items-center ml-auto"><div class="text-[--text-primary]">{{date current_period_end format="DD MMM YYYY"}}</div></div>
+                            </div>
+                        {{/if}}
+
+                        <div class="grid grid-cols-[auto_auto] md:grid-cols-[8rem_1fr] py-4 border-b border-[--border-color] text-sm gap-4 xs:gap-16 lg:gap-32 group">
+                            <div class="flex items-center gap-2">
+                                <div class="h-5 aspect-square"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="filter-theme icon icon-tabler icons-tabler-outline icon-tabler-credit-card"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M3 10l18 0" /><path d="M7 15l.01 0" /><path d="M11 15l2 0" /></svg></div>
+                                <div class="text-[--text-primary] font-medium">{{t "Card used"}}</div>
+                            </div>
+                            <div class="flex items-center ml-auto"><div class="text-[--text-primary]">**** **** **** {{default_payment_card_last4}}</div></div>
+                        </div>
+                    </div>
+
+                    <div class="button-wrapper justify-between w-full">
+                        <a href="javascript:"  data-members-edit-billing class="edit-button text-center xs:col-span-2 w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none">
+                            {{t "Edit Billing Info"}}
+                        </a>
+
+                        {{cancel_link
+                            class="cancel-button text-center xs:col-span-2 w-full xs:w-auto inline-block bg-[--subscribe-btn-bg] hover:bg-[--subscribe-btn-hover] rounded-sm px-7 xs:px-8 py-2.5 xs:py-3 duration-300 text-sm font-medium uppercase text-[--subscribe-btn-text] leading-none"
+                            cancelLabel=(t 'Cancel subscription')
+                            continueLabel=(t 'Continue subscription')
+                        }}
+                    </div>
+                </div>
+            </div>
+        </div>
